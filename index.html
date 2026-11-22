@@ -4,75 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>Mere Todos</title>
+<title>Video Earn</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#eef1f7; --card:#fff; --ink:#101a30; --muted:#6a7690; --line:#e1e6ef; --accent:#1f5eff; --soft:#e8efff; --danger:#d6455d; --ok:#1f9d6b; --shadow:0 1px 2px rgba(16,26,48,.04), 0 8px 24px -12px rgba(16,26,48,.12); }
-  @media (prefers-color-scheme: dark) { :root { --bg:#0b101d; --card:#141b2d; --ink:#e8ecf6; --muted:#8a96b2; --line:#232d47; --accent:#5b8cff; --soft:#1a2748; --danger:#ff6b84; --ok:#3ecf94; --shadow:none; } }
+  :root { --bg:#eef1f7; --card:#fff; --ink:#101a30; --muted:#6a7690; --line:#e1e6ef; --accent:#1f5eff; --soft:#e8efff; --danger:#d6455d; --ok:#1f9d6b; --gold:#c98a00; --shadow:0 1px 2px rgba(16,26,48,.04), 0 8px 24px -12px rgba(16,26,48,.12); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b101d; --card:#141b2d; --ink:#e8ecf6; --muted:#8a96b2; --line:#232d47; --accent:#5b8cff; --soft:#1a2748; --danger:#ff6b84; --ok:#3ecf94; --gold:#f2b84b; --shadow:none; } }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { margin:0; background:var(--bg); color:var(--ink); font:500 16px/1.5 Manrope, system-ui, sans-serif; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
   main { max-width:560px; margin:0 auto; padding:24px 16px 56px; }
   h1 { font-size:1.6rem; font-weight:800; letter-spacing:-.02em; margin:0; }
+  h2 { font-size:1.1rem; margin:22px 0 10px; }
   .sub { color:var(--muted); font-size:.9rem; margin:2px 0 0; word-break:break-all; }
   .hidden { display:none !important; }
   button { font:inherit; cursor:pointer; border:0; }
-  input[type=text], input[type=email], input[type=password] { width:100%; font:inherit; color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; }
+  input[type=text], input[type=email], input[type=password], input[type=url], input[type=number] { width:100%; font:inherit; color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:12px 14px; }
   input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--soft); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  .primary { background:var(--accent); color:#fff; font-weight:700; border-radius:12px; padding:13px 18px; }
-  .primary:disabled { opacity:.6; }
+  .primary { background:var(--accent); color:#fff; font-weight:700; border-radius:12px; padding:12px 18px; }
+  .primary:disabled { opacity:.45; cursor:not-allowed; }
   .ghost { background:none; color:var(--muted); font-weight:600; font-size:.9rem; padding:8px 10px; border-radius:10px; }
   .ghost:hover { background:var(--soft); color:var(--accent); }
-  .card { background:var(--card); border-radius:18px; box-shadow:var(--shadow); border:1px solid var(--line); }
+  .card { background:var(--card); border-radius:18px; box-shadow:var(--shadow); border:1px solid var(--line); padding:16px; margin-bottom:12px; }
   header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
   header .right { display:flex; gap:2px; flex-shrink:0; }
   #boot { text-align:center; color:var(--muted); margin-top:30vh; }
-  /* login */
   #auth { padding:26px 22px; margin-top:8vh; }
   #auth .sub { margin-bottom:20px; }
-  .tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--bg); border-radius:12px; padding:4px; margin-bottom:16px; }
+  .tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:4px; margin-bottom:14px; }
   .tabs button { background:none; color:var(--muted); font-weight:700; padding:10px; border-radius:9px; }
-  .tabs button.on { background:var(--card); color:var(--ink); box-shadow:var(--shadow); }
-  #auth label { display:block; font-size:.85rem; font-weight:700; margin-bottom:12px; }
-  #auth label input { margin-top:6px; font-weight:500; }
-  #auth .primary { width:100%; margin-top:4px; }
-  /* progress */
-  .stat { padding:18px; margin-bottom:14px; }
-  .stat .row { display:flex; align-items:baseline; justify-content:space-between; }
-  .stat b { font-size:2.2rem; font-weight:800; letter-spacing:-.03em; }
-  .stat span { color:var(--muted); font-weight:600; font-size:.9rem; }
-  .bar { height:8px; background:var(--soft); border-radius:99px; margin-top:10px; overflow:hidden; }
-  .bar i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s ease; }
-  /* add */
-  #form { display:flex; gap:8px; margin-bottom:14px; }
-  #form .primary { padding:0 20px; white-space:nowrap; }
-  /* list */
-  ul { list-style:none; margin:0; padding:0; }
-  #list li { display:flex; align-items:center; gap:12px; padding:13px 14px; margin-bottom:8px; background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
-  #list li span { flex:1; min-width:0; word-break:break-word; }
-  #list li.done span { color:var(--muted); text-decoration:line-through; }
-  #list li.empty { justify-content:center; color:var(--muted); padding:34px 14px; box-shadow:none; border-style:dashed; }
-  input[type=checkbox] { appearance:none; -webkit-appearance:none; flex-shrink:0; width:24px; height:24px; border:2px solid var(--line); border-radius:50%; background:var(--card); cursor:pointer; display:grid; place-items:center; }
-  input[type=checkbox]:checked { background:var(--ok); border-color:var(--ok); }
-  input[type=checkbox]:checked::after { content:"✓"; color:#fff; font-size:14px; font-weight:800; }
-  .act { background:none; color:var(--muted); font-size:.85rem; font-weight:600; padding:6px 8px; border-radius:8px; }
-  .act:hover { background:var(--soft); color:var(--accent); }
-  .act.del:hover { background:none; color:var(--danger); }
-  .act.save { color:var(--accent); }
-  li input.editbox { flex:1; padding:8px 10px; border-radius:9px; }
+  .tabs button.on { background:var(--soft); color:var(--accent); }
+  label { display:block; font-size:.85rem; font-weight:700; margin-bottom:12px; }
+  label input { margin-top:6px; font-weight:500; }
+  #auth .primary { width:100%; }
+  .wallet { display:flex; align-items:baseline; justify-content:space-between; }
+  .wallet b { font-size:2.4rem; font-weight:800; letter-spacing:-.03em; color:var(--gold); }
+  .row { display:flex; align-items:center; gap:12px; }
+  .grow { flex:1; min-width:0; }
+  .grow b { display:block; word-break:break-word; }
+  .chips { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
+  .chip { font-size:.75rem; font-weight:700; padding:2px 9px; border-radius:99px; background:var(--soft); color:var(--accent); }
+  .chip.gold { background:rgba(201,138,0,.14); color:var(--gold); }
+  .done { color:var(--ok); font-weight:700; font-size:.85rem; }
+  .empty { text-align:center; color:var(--muted); border-style:dashed; box-shadow:none; }
+  .amt { font-weight:800; color:var(--ok); }
+  video { width:100%; border-radius:12px; background:#000; aspect-ratio:16/9; display:block; }
+  .bar { height:8px; background:var(--soft); border-radius:99px; margin:14px 0 6px; overflow:hidden; }
+  .bar i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s; }
+  .btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .u > button { width:100%; display:flex; align-items:center; gap:12px; text-align:left; background:none; color:var(--ink); padding:0; }
+  .av { width:38px; height:38px; border-radius:50%; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
+  .u ul { list-style:none; margin:12px 0 0; padding:10px 0 0; border-top:1px solid var(--line); }
+  .u li { padding:3px 0; font-size:.9rem; }
+  .act { background:none; color:var(--danger); font-weight:600; font-size:.85rem; padding:6px 8px; }
   footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:22px; }
   footer.err { color:var(--danger); }
-  /* admin */
-  .u { margin-bottom:10px; overflow:hidden; }
-  .u > button { width:100%; display:flex; align-items:center; gap:12px; text-align:left; background:none; color:var(--ink); padding:14px; }
-  .av { width:38px; height:38px; border-radius:50%; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
-  .u .meta { min-width:0; flex:1; }
-  .u .meta b { display:block; font-weight:700; overflow:hidden; text-overflow:ellipsis; }
-  .u .meta small { color:var(--muted); font-size:.8rem; }
-  .u ul { border-top:1px solid var(--line); padding:8px 14px 12px; }
-  .u li { padding:6px 0; display:flex; gap:10px; color:var(--ink); }
-  .u li.d { color:var(--muted); text-decoration:line-through; }
   #toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,20px); background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:12px; font-weight:600; font-size:.9rem; opacity:0; pointer-events:none; transition:.25s; max-width:90%; text-align:center; z-index:9; }
   #toast.show { opacity:1; transform:translate(-50%,0); }
 </style>
@@ -83,8 +69,8 @@
   <p id="boot">Load ho raha hai...</p>
 
   <section id="auth" class="card hidden">
-    <h1>Mere Todos</h1>
-    <p class="sub">Apne kaam ek jagah, sirf aapke account mein.</p>
+    <h1>Video Earn</h1>
+    <p class="sub">Video dekho, coins kamao. (Abhi nakli coins, seekhne ke liye)</p>
     <div class="tabs"><button id="tabLogin" class="on" type="button">Login</button><button id="tabSignup" type="button">Naya account</button></div>
     <form id="authForm">
       <label>Email<input type="email" id="email" autocomplete="email" required></label>
@@ -93,27 +79,46 @@
     </form>
   </section>
 
-  <section id="app" class="hidden">
+  <section id="home" class="hidden">
     <header>
-      <div><h1>Mere Todos</h1><p class="sub" id="who"></p></div>
+      <div><h1>Video Earn</h1><p class="sub" id="who"></p></div>
       <div class="right"><button class="ghost hidden" id="adminBtn">Admin</button><button class="ghost" id="out">Logout</button></div>
     </header>
-    <div class="card stat">
-      <div class="row"><div><b id="doneN">0</b> <span>/ <span id="totalN">0</span> poore hue</span></div></div>
-      <div class="bar"><i id="fill"></i></div>
+    <div class="card wallet"><span class="sub">Tumhare coins</span><b id="coins">0</b></div>
+    <div class="tabs"><button id="tV" class="on">Videos</button><button id="tW">Wallet</button></div>
+    <div id="vList"></div>
+    <div id="wList" class="hidden"></div>
+  </section>
+
+  <section id="player" class="hidden">
+    <header>
+      <div><h1 id="pTitle"></h1><p class="sub" id="pSub"></p></div>
+      <div class="right"><button class="ghost" id="pBack">Wapas</button></div>
+    </header>
+    <div class="card">
+      <video id="vid" playsinline controlsList="nodownload"></video>
+      <div class="bar"><i id="pFill"></i></div>
+      <p class="sub" id="pTxt"></p>
+      <div class="btns"><button class="primary" id="pPlay">Chalao</button><button class="primary" id="claim" disabled>Coins lo</button></div>
     </div>
-    <form id="form">
-      <input type="text" id="text" placeholder="Naya kaam likho" autocomplete="off" required>
-      <button class="primary" type="submit">Jodo</button>
-    </form>
-    <ul id="list"></ul>
   </section>
 
   <section id="admin" class="hidden">
     <header>
-      <div><h1>Admin</h1><p class="sub">Saare users aur unke todos (sirf padhne ke liye)</p></div>
-      <div class="right"><button class="ghost" id="back">Wapas</button></div>
+      <div><h1>Admin</h1><p class="sub">Videos jodo aur users dekho</p></div>
+      <div class="right"><button class="ghost" id="aBack">Wapas</button></div>
     </header>
+    <form id="vForm" class="card">
+      <label>Video ka naam<input type="text" id="vt" required></label>
+      <label>Video link (seedha .mp4)<input type="url" id="vu" placeholder="https://..." required></label>
+      <div class="btns">
+        <label>Coins<input type="number" id="vr" min="1" max="1000" value="10" required></label>
+        <label>Kitne second dekhna hai<input type="number" id="vs" min="5" max="600" value="15" required></label>
+      </div>
+      <button class="primary" style="width:100%">Video jodo</button>
+    </form>
+    <div id="aVids"></div>
+    <h2>Users</h2>
     <div id="users"></div>
   </section>
 
@@ -121,14 +126,12 @@
 </main>
 
 <script type="module">
-  // STEP A: Firebase ke tools import karo
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+  import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // STEP B: Tumhare project ki pehchaan
   const firebaseConfig = {
     apiKey: "AIzaSyBjxqern4xx5IfWb-3KnEDJysXI3aKjQJI",
     authDomain: "todo-learning-7eb8e.firebaseapp.com",
@@ -142,142 +145,168 @@
   const db = getFirestore(app);
 
   const $ = (id) => document.getElementById(id);
-  let isSignup = false, unsub = null, tt;
+  const show = (id, on) => $(id).classList.toggle("hidden", !on);
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const initial = (e) => (e || "?")[0].toUpperCase();
+  const when = (ts) => ts ? ts.toDate().toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "abhi";
+
+  let uid = null, isSignup = false, unsubs = [], videos = [], rewards = [], cur = null, watched = 0, maxT = 0, tick = null, tt;
 
   const msgs = {
     "auth/invalid-credential": "Email ya password galat hai.",
     "auth/email-already-in-use": "Ye email pehle se registered hai. Login karo.",
     "auth/weak-password": "Password kam se kam 6 akshar ka rakho.",
     "auth/invalid-email": "Email sahi format mein likho.",
-    "auth/too-many-requests": "Bahut koshishein hui. Thodi der baad try karo.",
-    "permission-denied": "Rules is kaam ki ijazat nahi de rahe."
+    "permission-denied": "Ijazat nahi mili (shayad coins pehle mil chuke hain)."
   };
   function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 3500); }
   function showError(err) { console.error(err); toast(msgs[err.code] || ("Dikkat: " + (err.code || err.message))); }
-  const show = (id, on) => $(id).classList.toggle("hidden", !on);
-  const initial = (e) => (e || "?")[0].toUpperCase();
+  function view(n) { ["auth", "home", "player", "admin"].forEach((v) => show(v, v === n)); show("boot", false); }
 
-  // STEP C: Login / Signup
+  // ---- Login ----
   function setMode(s) {
     isSignup = s;
-    $("tabLogin").classList.toggle("on", !s);
-    $("tabSignup").classList.toggle("on", s);
+    $("tabLogin").classList.toggle("on", !s); $("tabSignup").classList.toggle("on", s);
     $("authBtn").textContent = s ? "Account banao" : "Login karo";
     $("pass").autocomplete = s ? "new-password" : "current-password";
   }
   $("tabLogin").onclick = () => setMode(false);
   $("tabSignup").onclick = () => setMode(true);
   $("authForm").onsubmit = async (e) => {
-    e.preventDefault();
-    $("authBtn").disabled = true;
-    try {
-      const fn = isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword;
-      await fn(auth, $("email").value.trim(), $("pass").value);
-    } catch (err) { showError(err); }
+    e.preventDefault(); $("authBtn").disabled = true;
+    try { await (isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, $("email").value.trim(), $("pass").value); }
+    catch (err) { showError(err); }
     $("authBtn").disabled = false;
   };
   $("out").onclick = () => signOut(auth);
 
-  // STEP D: Firebase batata hai user login hai ya nahi
   onAuthStateChanged(auth, (user) => {
-    if (unsub) { unsub(); unsub = null; }
-    show("boot", false); show("admin", false);
-    if (!user) { show("auth", true); show("app", false); return; }
-    show("auth", false); show("app", true);
+    unsubs.forEach((f) => f()); unsubs = []; clearInterval(tick);
+    if (!user) { uid = null; view("auth"); return; }
+    uid = user.uid;
     $("who").textContent = user.email;
-    saveProfile(user);
-    checkAdmin(user.uid);
-    startTodos(user.uid);
+    view("home");
+    setDoc(doc(db, "users", uid), { email: user.email, lastLogin: serverTimestamp() }, { merge: true }).catch(showError);
+    getDoc(doc(db, "admins", uid)).then((s) => show("adminBtn", s.exists())).catch(() => show("adminBtn", false));
+
+    // Live: saare videos (sab padh sakte hain)
+    unsubs.push(onSnapshot(query(collection(db, "videos"), orderBy("createdAt", "desc")), (s) => {
+      videos = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderVideos(); renderAdminVideos();
+    }, showError));
+    // Live: sirf is user ke rewards (ledger). Balance inhi ko jod kar nikalta hai
+    unsubs.push(onSnapshot(query(collection(db, "users", uid, "rewards"), orderBy("createdAt", "desc")), (s) => {
+      rewards = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      $("coins").textContent = rewards.reduce((a, r) => a + (r.amount || 0), 0);
+      $("status").textContent = "● Firebase se connected"; $("status").className = "";
+      renderWallet(); renderVideos();
+    }, showError));
   });
 
-  // User ka profile: users/<uid> (merge:true = purane fields mat mitao)
-  function saveProfile(user) {
-    setDoc(doc(db, "users", user.uid), { email: user.email, lastLogin: serverTimestamp() }, { merge: true }).catch(showError);
+  // ---- Home ----
+  $("tV").onclick = () => { $("tV").classList.add("on"); $("tW").classList.remove("on"); show("vList", true); show("wList", false); };
+  $("tW").onclick = () => { $("tW").classList.add("on"); $("tV").classList.remove("on"); show("vList", false); show("wList", true); };
+
+  function renderVideos() {
+    const box = $("vList"); box.textContent = "";
+    if (!videos.length) { box.append(el("div", "card empty", "Abhi koi video nahi. Admin se video jodne ko kaho.")); return; }
+    const got = new Set(rewards.map((r) => r.id));
+    videos.forEach((v) => {
+      const c = el("div", "card row");
+      const g = el("div", "grow"); g.append(el("b", "", v.title));
+      const chips = el("div", "chips"); chips.append(el("span", "chip gold", "+" + v.reward + " coins"), el("span", "chip", v.seconds + " second"));
+      g.append(chips);
+      c.append(g);
+      if (got.has(v.id)) c.append(el("span", "done", "✓ Mil gaye"));
+      else { const b = el("button", "primary", "Dekho"); b.onclick = () => openPlayer(v); c.append(b); }
+      box.append(c);
+    });
+  }
+  function renderWallet() {
+    const box = $("wList"); box.textContent = "";
+    box.append(el("p", "sub", "Ye nakli coins hain, seekhne ke liye. Har coin ka hisaab yahan likha rehta hai (ledger)."));
+    if (!rewards.length) { box.append(el("div", "card empty", "Abhi koi kamai nahi.")); return; }
+    rewards.forEach((r) => {
+      const c = el("div", "card row"); const g = el("div", "grow"); g.append(el("b", "", r.title || "Video"), el("span", "sub", when(r.createdAt)));
+      c.append(g, el("span", "amt", "+" + r.amount)); box.append(c);
+    });
   }
 
-  // Admin wahi hai jiska admins/<uid> document ho (sirf console se banta hai)
-  async function checkAdmin(uid) {
-    try { const s = await getDoc(doc(db, "admins", uid)); show("adminBtn", s.exists()); }
-    catch (e) { show("adminBtn", false); }
+  // ---- Player ----
+  const vid = $("vid");
+  function upd() {
+    $("pFill").style.width = Math.min(100, Math.round(watched / cur.seconds * 100)) + "%";
+    const ok = watched >= cur.seconds;
+    $("pTxt").textContent = ok ? "Poora dekh liya! Ab coins lo." : watched + " / " + cur.seconds + " second dekhe";
+    $("claim").disabled = !ok;
   }
-  $("adminBtn").onclick = async () => {
-    show("app", false); show("admin", true);
-    const box = $("users");
-    box.textContent = "Load ho raha hai...";
+  function openPlayer(v) {
+    cur = v; watched = 0; maxT = 0;
+    $("pTitle").textContent = v.title; $("pSub").textContent = "Poora dekho, phir +" + v.reward + " coins milenge";
+    vid.src = v.url; $("pPlay").textContent = "Chalao"; upd(); view("player");
+    clearInterval(tick);
+    // Har second check: video chal raha hai aur screen par hai tabhi second gino
+    tick = setInterval(() => { if (!vid.paused && !vid.ended && !document.hidden) { watched++; upd(); } }, 1000);
+  }
+  function backHome() { clearInterval(tick); vid.pause(); vid.removeAttribute("src"); vid.load(); view("home"); }
+  $("pBack").onclick = backHome;
+  $("pPlay").onclick = () => (vid.paused ? vid.play() : vid.pause());
+  vid.onplay = () => ($("pPlay").textContent = "Roko");
+  vid.onpause = () => ($("pPlay").textContent = "Chalao");
+  vid.onerror = () => { if (vid.getAttribute("src")) toast("Video load nahi hua. Link check karo."); };
+  vid.ontimeupdate = () => { if (vid.currentTime > maxT) maxT = vid.currentTime; };
+  vid.onseeking = () => { if (vid.currentTime > maxT + 1) vid.currentTime = maxT; }; // aage skip nahi
+  document.addEventListener("visibilitychange", () => { if (document.hidden) vid.pause(); });
+
+  $("claim").onclick = async () => {
+    $("claim").disabled = true;
     try {
-      const snap = await getDocs(collection(db, "users"));
-      box.textContent = "";
+      // Document ki ID = video ki ID, isliye ek video ka reward ek hi baar ban sakta hai
+      await setDoc(doc(db, "users", uid, "rewards", cur.id), { amount: cur.reward, title: cur.title, createdAt: serverTimestamp() });
+      toast("+" + cur.reward + " coins mil gaye 🎉"); backHome();
+    } catch (err) { showError(err); }
+  };
+
+  // ---- Admin ----
+  $("adminBtn").onclick = () => { view("admin"); loadUsers(); };
+  $("aBack").onclick = () => view("home");
+  $("vForm").onsubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "videos"), { title: $("vt").value.trim(), url: $("vu").value.trim(), reward: Number($("vr").value), seconds: Number($("vs").value), createdAt: serverTimestamp() });
+      $("vForm").reset(); $("vr").value = 10; $("vs").value = 15; toast("Video jud gaya");
+    } catch (err) { showError(err); }
+  };
+  function renderAdminVideos() {
+    const box = $("aVids"); box.textContent = "";
+    videos.forEach((v) => {
+      const c = el("div", "card row"); const g = el("div", "grow"); g.append(el("b", "", v.title), el("span", "sub", v.reward + " coins · " + v.seconds + " second"));
+      const d = el("button", "act", "Hatao"); d.onclick = () => deleteDoc(doc(db, "videos", v.id)).catch(showError);
+      c.append(g, d); box.append(c);
+    });
+  }
+  async function loadUsers() {
+    const box = $("users"); box.textContent = "Load ho raha hai...";
+    try {
+      const snap = await getDocs(collection(db, "users")); box.textContent = "";
       snap.forEach((u) => {
-        const data = u.data();
-        const card = document.createElement("div"); card.className = "card u";
-        const head = document.createElement("button");
-        const av = document.createElement("span"); av.className = "av"; av.textContent = initial(data.email);
-        const meta = document.createElement("span"); meta.className = "meta";
-        const name = document.createElement("b"); name.textContent = data.email || u.id;
-        const sm = document.createElement("small"); sm.textContent = "Last login: " + (data.lastLogin ? data.lastLogin.toDate().toLocaleString() : "-");
-        meta.append(name, sm); head.append(av, meta);
-        const ul = document.createElement("ul"); ul.className = "hidden";
+        const data = u.data(); const card = el("div", "card u"); const head = el("button");
+        const g = el("div", "grow"); g.append(el("b", "", data.email || u.id), el("span", "sub", "Last login: " + when(data.lastLogin)));
+        head.append(el("span", "av", initial(data.email)), g);
+        const ul = el("ul", "hidden");
         head.onclick = async () => {
           if (!ul.classList.contains("hidden")) { ul.classList.add("hidden"); return; }
           ul.textContent = "";
-          let ts;
-          try { ts = await getDocs(collection(db, "users", u.id, "todos")); } catch (e) { showError(e); return; }
-          if (ts.empty) { const li = document.createElement("li"); li.textContent = "Koi todo nahi"; ul.append(li); }
-          ts.forEach((t) => {
-            const li = document.createElement("li"); if (t.data().done) li.className = "d";
-            li.textContent = (t.data().done ? "✓ " : "• ") + t.data().text; ul.append(li);
-          });
-          ul.classList.remove("hidden");
+          try {
+            const rs = await getDocs(collection(db, "users", u.id, "rewards")); let total = 0;
+            rs.forEach((r) => { total += r.data().amount || 0; ul.append(el("li", "", "• " + (r.data().title || "Video") + "  +" + r.data().amount)); });
+            ul.prepend(el("li", "amt", "Total: " + total + " coins"));
+            ul.classList.remove("hidden");
+          } catch (err) { showError(err); }
         };
         card.append(head, ul); box.append(card);
       });
     } catch (err) { showError(err); }
-  };
-  $("back").onclick = () => { show("admin", false); show("app", true); };
-
-  // Todos: har user ka apna folder users/<uid>/todos
-  function startTodos(uid) {
-    const todos = collection(db, "users", uid, "todos");
-    const list = $("list");
-
-    $("form").onsubmit = async (e) => {
-      e.preventDefault();
-      const text = $("text").value.trim();
-      if (!text) return;
-      $("text").value = "";
-      try { await addDoc(todos, { text, done: false, createdAt: serverTimestamp() }); } catch (err) { showError(err); }
-    };
-
-    unsub = onSnapshot(query(todos, orderBy("createdAt", "desc")), (snap) => {
-      $("status").textContent = "● Firebase se connected";
-      $("status").className = "";
-      let done = 0;
-      list.textContent = "";
-      if (snap.empty) { const li = document.createElement("li"); li.className = "empty"; li.textContent = "Abhi koi kaam nahi. Upar se jodo."; list.append(li); }
-      snap.forEach((d) => {
-        const t = d.data(); if (t.done) done++;
-        const ref = doc(db, "users", uid, "todos", d.id);
-        const li = document.createElement("li"); if (t.done) li.className = "done";
-        const box = document.createElement("input"); box.type = "checkbox"; box.checked = t.done;
-        box.setAttribute("aria-label", "Poora hua");
-        box.onchange = () => updateDoc(ref, { done: box.checked }).catch(showError);
-        const span = document.createElement("span"); span.textContent = t.text;
-        const edit = document.createElement("button"); edit.className = "act"; edit.textContent = "Badlo";
-        edit.onclick = () => {
-          const inp = document.createElement("input"); inp.type = "text"; inp.value = t.text; inp.className = "editbox";
-          span.replaceWith(inp); inp.focus();
-          edit.textContent = "Save"; edit.className = "act save";
-          const save = () => { const v = inp.value.trim(); if (v) updateDoc(ref, { text: v, updatedAt: serverTimestamp() }).catch(showError); };
-          edit.onclick = save;
-          inp.onkeydown = (ev) => { if (ev.key === "Enter") save(); };
-        };
-        const del = document.createElement("button"); del.className = "act del"; del.textContent = "Hatao";
-        del.onclick = () => deleteDoc(ref).catch(showError);
-        li.append(box, span, edit, del); list.append(li);
-      });
-      $("doneN").textContent = done; $("totalN").textContent = snap.size;
-      $("fill").style.width = (snap.size ? Math.round(done / snap.size * 100) : 0) + "%";
-    }, (err) => { $("status").textContent = "Connect nahi ho paya"; $("status").className = "err"; showError(err); });
   }
 </script>
 </body>
