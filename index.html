@@ -2,62 +2,130 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Mere Todos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#eef2f7; --card:#fff; --ink:#1b2a41; --muted:#6b7a90; --accent:#2f5bea; --line:#d9e0ea; --danger:#c0392b; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, "Times New Roman", serif; }
-  main { max-width:520px; margin:0 auto; padding:28px 16px 60px; }
-  h1 { font-size:2rem; margin:0 0 4px; }
-  #status { font:0.85rem system-ui, sans-serif; color:var(--muted); margin:0 0 20px; }
-  #status.err { color:var(--danger); }
-  form { display:flex; gap:8px; margin-bottom:18px; }
-  input[type=text] { flex:1; padding:12px; font:1rem system-ui, sans-serif; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); }
-  button { font:600 0.95rem system-ui, sans-serif; border:0; border-radius:8px; cursor:pointer; }
-  form button { background:var(--accent); color:#fff; padding:0 18px; }
-  ul { list-style:none; margin:0; padding:0; }
-  li { display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:8px; }
-  li span { flex:1; word-break:break-word; }
-  li.done span { text-decoration:line-through; color:var(--muted); }
-  li input { width:20px; height:20px; accent-color:var(--accent); }
-  li button { background:none; color:var(--danger); padding:6px 8px; }
-  .empty { color:var(--muted); font-style:italic; }
-  #auth input { display:block; width:100%; margin-bottom:10px; }
-  #auth button { width:100%; background:var(--accent); color:#fff; padding:12px; }
-  #auth .link { background:none; color:var(--accent); margin-top:6px; }
-  #bar { display:flex; justify-content:space-between; align-items:center; font:0.85rem system-ui, sans-serif; color:var(--muted); margin-bottom:14px; }
-  #bar button { background:none; color:var(--accent); }
+  :root { --bg:#eef1f7; --card:#fff; --ink:#101a30; --muted:#6a7690; --line:#e1e6ef; --accent:#1f5eff; --soft:#e8efff; --danger:#d6455d; --ok:#1f9d6b; --shadow:0 1px 2px rgba(16,26,48,.04), 0 8px 24px -12px rgba(16,26,48,.12); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b101d; --card:#141b2d; --ink:#e8ecf6; --muted:#8a96b2; --line:#232d47; --accent:#5b8cff; --soft:#1a2748; --danger:#ff6b84; --ok:#3ecf94; --shadow:none; } }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:500 16px/1.5 Manrope, system-ui, sans-serif; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+  main { max-width:560px; margin:0 auto; padding:24px 16px 56px; }
+  h1 { font-size:1.6rem; font-weight:800; letter-spacing:-.02em; margin:0; }
+  .sub { color:var(--muted); font-size:.9rem; margin:2px 0 0; word-break:break-all; }
   .hidden { display:none !important; }
+  button { font:inherit; cursor:pointer; border:0; }
+  input[type=text], input[type=email], input[type=password] { width:100%; font:inherit; color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:13px 14px; }
+  input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--soft); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .primary { background:var(--accent); color:#fff; font-weight:700; border-radius:12px; padding:13px 18px; }
+  .primary:disabled { opacity:.6; }
+  .ghost { background:none; color:var(--muted); font-weight:600; font-size:.9rem; padding:8px 10px; border-radius:10px; }
+  .ghost:hover { background:var(--soft); color:var(--accent); }
+  .card { background:var(--card); border-radius:18px; box-shadow:var(--shadow); border:1px solid var(--line); }
+  header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
+  header .right { display:flex; gap:2px; flex-shrink:0; }
+  #boot { text-align:center; color:var(--muted); margin-top:30vh; }
+  /* login */
+  #auth { padding:26px 22px; margin-top:8vh; }
+  #auth .sub { margin-bottom:20px; }
+  .tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--bg); border-radius:12px; padding:4px; margin-bottom:16px; }
+  .tabs button { background:none; color:var(--muted); font-weight:700; padding:10px; border-radius:9px; }
+  .tabs button.on { background:var(--card); color:var(--ink); box-shadow:var(--shadow); }
+  #auth label { display:block; font-size:.85rem; font-weight:700; margin-bottom:12px; }
+  #auth label input { margin-top:6px; font-weight:500; }
+  #auth .primary { width:100%; margin-top:4px; }
+  /* progress */
+  .stat { padding:18px; margin-bottom:14px; }
+  .stat .row { display:flex; align-items:baseline; justify-content:space-between; }
+  .stat b { font-size:2.2rem; font-weight:800; letter-spacing:-.03em; }
+  .stat span { color:var(--muted); font-weight:600; font-size:.9rem; }
+  .bar { height:8px; background:var(--soft); border-radius:99px; margin-top:10px; overflow:hidden; }
+  .bar i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s ease; }
+  /* add */
+  #form { display:flex; gap:8px; margin-bottom:14px; }
+  #form .primary { padding:0 20px; white-space:nowrap; }
+  /* list */
+  ul { list-style:none; margin:0; padding:0; }
+  #list li { display:flex; align-items:center; gap:12px; padding:13px 14px; margin-bottom:8px; background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+  #list li span { flex:1; min-width:0; word-break:break-word; }
+  #list li.done span { color:var(--muted); text-decoration:line-through; }
+  #list li.empty { justify-content:center; color:var(--muted); padding:34px 14px; box-shadow:none; border-style:dashed; }
+  input[type=checkbox] { appearance:none; -webkit-appearance:none; flex-shrink:0; width:24px; height:24px; border:2px solid var(--line); border-radius:50%; background:var(--card); cursor:pointer; display:grid; place-items:center; }
+  input[type=checkbox]:checked { background:var(--ok); border-color:var(--ok); }
+  input[type=checkbox]:checked::after { content:"✓"; color:#fff; font-size:14px; font-weight:800; }
+  .act { background:none; color:var(--muted); font-size:.85rem; font-weight:600; padding:6px 8px; border-radius:8px; }
+  .act:hover { background:var(--soft); color:var(--accent); }
+  .act.del:hover { background:none; color:var(--danger); }
+  .act.save { color:var(--accent); }
+  li input.editbox { flex:1; padding:8px 10px; border-radius:9px; }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:22px; }
+  footer.err { color:var(--danger); }
+  /* admin */
+  .u { margin-bottom:10px; overflow:hidden; }
+  .u > button { width:100%; display:flex; align-items:center; gap:12px; text-align:left; background:none; color:var(--ink); padding:14px; }
+  .av { width:38px; height:38px; border-radius:50%; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
+  .u .meta { min-width:0; flex:1; }
+  .u .meta b { display:block; font-weight:700; overflow:hidden; text-overflow:ellipsis; }
+  .u .meta small { color:var(--muted); font-size:.8rem; }
+  .u ul { border-top:1px solid var(--line); padding:8px 14px 12px; }
+  .u li { padding:6px 0; display:flex; gap:10px; color:var(--ink); }
+  .u li.d { color:var(--muted); text-decoration:line-through; }
+  #toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,20px); background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:12px; font-weight:600; font-size:.9rem; opacity:0; pointer-events:none; transition:.25s; max-width:90%; text-align:center; z-index:9; }
+  #toast.show { opacity:1; transform:translate(-50%,0); }
 </style>
 </head>
 <body>
+<div id="toast" role="status"></div>
 <main>
-  <h1>Mere Todos</h1>
-  <p id="status">Firebase se connect ho raha hai...</p>
-  <section id="auth" class="hidden">
-    <input type="email" id="email" placeholder="Email" autocomplete="email">
-    <input type="password" id="pass" placeholder="Password (kam se kam 6 akshar)" autocomplete="current-password">
-    <button id="authBtn">Login karo</button>
-    <button class="link" id="toggle">Naya account banao</button>
+  <p id="boot">Load ho raha hai...</p>
+
+  <section id="auth" class="card hidden">
+    <h1>Mere Todos</h1>
+    <p class="sub">Apne kaam ek jagah, sirf aapke account mein.</p>
+    <div class="tabs"><button id="tabLogin" class="on" type="button">Login</button><button id="tabSignup" type="button">Naya account</button></div>
+    <form id="authForm">
+      <label>Email<input type="email" id="email" autocomplete="email" required></label>
+      <label>Password<input type="password" id="pass" autocomplete="current-password" minlength="6" required></label>
+      <button class="primary" id="authBtn">Login karo</button>
+    </form>
   </section>
-  <div id="app" class="hidden">
-  <div id="bar"><span id="who"></span><button id="out">Logout</button></div>
-  <form id="form">
-    <input type="text" id="text" placeholder="Naya kaam likho" autocomplete="off" required>
-    <button type="submit">Jodo</button>
-  </form>
-  <ul id="list"></ul>
-  </div>
+
+  <section id="app" class="hidden">
+    <header>
+      <div><h1>Mere Todos</h1><p class="sub" id="who"></p></div>
+      <div class="right"><button class="ghost hidden" id="adminBtn">Admin</button><button class="ghost" id="out">Logout</button></div>
+    </header>
+    <div class="card stat">
+      <div class="row"><div><b id="doneN">0</b> <span>/ <span id="totalN">0</span> poore hue</span></div></div>
+      <div class="bar"><i id="fill"></i></div>
+    </div>
+    <form id="form">
+      <input type="text" id="text" placeholder="Naya kaam likho" autocomplete="off" required>
+      <button class="primary" type="submit">Jodo</button>
+    </form>
+    <ul id="list"></ul>
+  </section>
+
+  <section id="admin" class="hidden">
+    <header>
+      <div><h1>Admin</h1><p class="sub">Saare users aur unke todos (sirf padhne ke liye)</p></div>
+      <div class="right"><button class="ghost" id="back">Wapas</button></div>
+    </header>
+    <div id="users"></div>
+  </section>
+
+  <footer id="status">Firebase se connect ho raha hai...</footer>
 </main>
 
 <script type="module">
-  // STEP A: Firebase ke tools import karo (ab Auth bhi)
+  // STEP A: Firebase ke tools import karo
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, setDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+  import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   // STEP B: Tumhare project ki pehchaan
@@ -69,101 +137,147 @@
     messagingSenderId: "716563997241",
     appId: "1:716563997241:web:26d9920b377b71e6d863e8"
   };
-
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app); // login system ka handle
+  const auth = getAuth(app);
   const db = getFirestore(app);
 
   const $ = (id) => document.getElementById(id);
-  const list = $("list"), status = $("status");
-  let isSignup = false, unsub = null;
+  let isSignup = false, unsub = null, tt;
 
-  // STEP C: Login / Signup button
-  $("toggle").onclick = () => {
-    isSignup = !isSignup;
-    $("authBtn").textContent = isSignup ? "Account banao" : "Login karo";
-    $("toggle").textContent = isSignup ? "Pehle se account hai? Login karo" : "Naya account banao";
+  const msgs = {
+    "auth/invalid-credential": "Email ya password galat hai.",
+    "auth/email-already-in-use": "Ye email pehle se registered hai. Login karo.",
+    "auth/weak-password": "Password kam se kam 6 akshar ka rakho.",
+    "auth/invalid-email": "Email sahi format mein likho.",
+    "auth/too-many-requests": "Bahut koshishein hui. Thodi der baad try karo.",
+    "permission-denied": "Rules is kaam ki ijazat nahi de rahe."
   };
-  $("authBtn").onclick = async () => {
+  function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 3500); }
+  function showError(err) { console.error(err); toast(msgs[err.code] || ("Dikkat: " + (err.code || err.message))); }
+  const show = (id, on) => $(id).classList.toggle("hidden", !on);
+  const initial = (e) => (e || "?")[0].toUpperCase();
+
+  // STEP C: Login / Signup
+  function setMode(s) {
+    isSignup = s;
+    $("tabLogin").classList.toggle("on", !s);
+    $("tabSignup").classList.toggle("on", s);
+    $("authBtn").textContent = s ? "Account banao" : "Login karo";
+    $("pass").autocomplete = s ? "new-password" : "current-password";
+  }
+  $("tabLogin").onclick = () => setMode(false);
+  $("tabSignup").onclick = () => setMode(true);
+  $("authForm").onsubmit = async (e) => {
+    e.preventDefault();
+    $("authBtn").disabled = true;
     try {
       const fn = isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword;
       await fn(auth, $("email").value.trim(), $("pass").value);
     } catch (err) { showError(err); }
+    $("authBtn").disabled = false;
   };
   $("out").onclick = () => signOut(auth);
 
-  // STEP D: Firebase batata hai ki user login hai ya nahi (ye sabse zaruri hissa hai)
+  // STEP D: Firebase batata hai user login hai ya nahi
   onAuthStateChanged(auth, (user) => {
     if (unsub) { unsub(); unsub = null; }
-    if (!user) {
-      $("auth").classList.remove("hidden");
-      $("app").classList.add("hidden");
-      status.textContent = "Login karo ya naya account banao.";
-      status.className = "";
-      return;
-    }
-    $("auth").classList.add("hidden");
-    $("app").classList.remove("hidden");
+    show("boot", false); show("admin", false);
+    if (!user) { show("auth", true); show("app", false); return; }
+    show("auth", false); show("app", true);
     $("who").textContent = user.email;
     saveProfile(user);
+    checkAdmin(user.uid);
     startTodos(user.uid);
   });
 
-  // LESSON 1: user ka profile document banao: users/<uid>
-  // setDoc = is jagah par document likho (na ho to bana do). merge:true = purane fields mat mitao.
+  // User ka profile: users/<uid> (merge:true = purane fields mat mitao)
   function saveProfile(user) {
-    setDoc(doc(db, "users", user.uid),
-      { email: user.email, lastLogin: serverTimestamp() },
-      { merge: true }).catch(showError);
+    setDoc(doc(db, "users", user.uid), { email: user.email, lastLogin: serverTimestamp() }, { merge: true }).catch(showError);
   }
 
+  // Admin wahi hai jiska admins/<uid> document ho (sirf console se banta hai)
+  async function checkAdmin(uid) {
+    try { const s = await getDoc(doc(db, "admins", uid)); show("adminBtn", s.exists()); }
+    catch (e) { show("adminBtn", false); }
+  }
+  $("adminBtn").onclick = async () => {
+    show("app", false); show("admin", true);
+    const box = $("users");
+    box.textContent = "Load ho raha hai...";
+    try {
+      const snap = await getDocs(collection(db, "users"));
+      box.textContent = "";
+      snap.forEach((u) => {
+        const data = u.data();
+        const card = document.createElement("div"); card.className = "card u";
+        const head = document.createElement("button");
+        const av = document.createElement("span"); av.className = "av"; av.textContent = initial(data.email);
+        const meta = document.createElement("span"); meta.className = "meta";
+        const name = document.createElement("b"); name.textContent = data.email || u.id;
+        const sm = document.createElement("small"); sm.textContent = "Last login: " + (data.lastLogin ? data.lastLogin.toDate().toLocaleString() : "-");
+        meta.append(name, sm); head.append(av, meta);
+        const ul = document.createElement("ul"); ul.className = "hidden";
+        head.onclick = async () => {
+          if (!ul.classList.contains("hidden")) { ul.classList.add("hidden"); return; }
+          ul.textContent = "";
+          let ts;
+          try { ts = await getDocs(collection(db, "users", u.id, "todos")); } catch (e) { showError(e); return; }
+          if (ts.empty) { const li = document.createElement("li"); li.textContent = "Koi todo nahi"; ul.append(li); }
+          ts.forEach((t) => {
+            const li = document.createElement("li"); if (t.data().done) li.className = "d";
+            li.textContent = (t.data().done ? "✓ " : "• ") + t.data().text; ul.append(li);
+          });
+          ul.classList.remove("hidden");
+        };
+        card.append(head, ul); box.append(card);
+      });
+    } catch (err) { showError(err); }
+  };
+  $("back").onclick = () => { show("admin", false); show("app", true); };
+
+  // Todos: har user ka apna folder users/<uid>/todos
   function startTodos(uid) {
-    // Har user ka apna folder: users/<uid>/todos. Dusre ka data yahan se nahi dikhega.
     const todos = collection(db, "users", uid, "todos");
+    const list = $("list");
 
     $("form").onsubmit = async (e) => {
       e.preventDefault();
       const text = $("text").value.trim();
       if (!text) return;
       $("text").value = "";
-      try { await addDoc(todos, { text, done: false, createdAt: serverTimestamp() }); }
-      catch (err) { showError(err); }
+      try { await addDoc(todos, { text, done: false, createdAt: serverTimestamp() }); } catch (err) { showError(err); }
     };
 
     unsub = onSnapshot(query(todos, orderBy("createdAt", "desc")), (snap) => {
-      status.textContent = "Firebase se connected ✓";
-      status.className = "";
-      list.innerHTML = "";
-      if (snap.empty) list.innerHTML = '<li class="empty">Abhi koi kaam nahi. Upar se jodo.</li>';
+      $("status").textContent = "● Firebase se connected";
+      $("status").className = "";
+      let done = 0;
+      list.textContent = "";
+      if (snap.empty) { const li = document.createElement("li"); li.className = "empty"; li.textContent = "Abhi koi kaam nahi. Upar se jodo."; list.append(li); }
       snap.forEach((d) => {
-        const t = d.data();
-        const li = document.createElement("li");
-        if (t.done) li.className = "done";
-        const box = document.createElement("input");
-        box.type = "checkbox"; box.checked = t.done;
-        box.onchange = () => updateDoc(doc(db, "users", uid, "todos", d.id), { done: box.checked }).catch(showError);
-        const span = document.createElement("span");
-        span.textContent = t.text;
-        const del = document.createElement("button");
-        del.textContent = "Hatao";
-        del.onclick = () => deleteDoc(doc(db, "users", uid, "todos", d.id)).catch(showError);
-        li.append(box, span, del);
-        list.append(li);
+        const t = d.data(); if (t.done) done++;
+        const ref = doc(db, "users", uid, "todos", d.id);
+        const li = document.createElement("li"); if (t.done) li.className = "done";
+        const box = document.createElement("input"); box.type = "checkbox"; box.checked = t.done;
+        box.setAttribute("aria-label", "Poora hua");
+        box.onchange = () => updateDoc(ref, { done: box.checked }).catch(showError);
+        const span = document.createElement("span"); span.textContent = t.text;
+        const edit = document.createElement("button"); edit.className = "act"; edit.textContent = "Badlo";
+        edit.onclick = () => {
+          const inp = document.createElement("input"); inp.type = "text"; inp.value = t.text; inp.className = "editbox";
+          span.replaceWith(inp); inp.focus();
+          edit.textContent = "Save"; edit.className = "act save";
+          const save = () => { const v = inp.value.trim(); if (v) updateDoc(ref, { text: v, updatedAt: serverTimestamp() }).catch(showError); };
+          edit.onclick = save;
+          inp.onkeydown = (ev) => { if (ev.key === "Enter") save(); };
+        };
+        const del = document.createElement("button"); del.className = "act del"; del.textContent = "Hatao";
+        del.onclick = () => deleteDoc(ref).catch(showError);
+        li.append(box, span, edit, del); list.append(li);
       });
-    }, showError);
-  }
-
-  function showError(err) {
-    const msgs = {
-      "auth/invalid-credential": "Email ya password galat hai.",
-      "auth/email-already-in-use": "Ye email pehle se registered hai. Login karo.",
-      "auth/weak-password": "Password kam se kam 6 akshar ka rakho.",
-      "auth/invalid-email": "Email sahi format mein likho.",
-      "permission-denied": "Rules is kaam ki ijazat nahi de rahe."
-    };
-    status.textContent = msgs[err.code] || ("Dikkat: " + err.code);
-    status.className = "err";
-    console.error(err);
+      $("doneN").textContent = done; $("totalN").textContent = snap.size;
+      $("fill").style.width = (snap.size ? Math.round(done / snap.size * 100) : 0) + "%";
+    }, (err) => { $("status").textContent = "Connect nahi ho paya"; $("status").className = "err"; showError(err); });
   }
 </script>
 </body>
