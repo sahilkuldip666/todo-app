@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mere Todos</title>
+<style>
+  :root { --bg:#eef2f7; --card:#fff; --ink:#1b2a41; --muted:#6b7a90; --accent:#2f5bea; --line:#d9e0ea; --danger:#c0392b; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: Georgia, "Times New Roman", serif; }
+  main { max-width:520px; margin:0 auto; padding:28px 16px 60px; }
+  h1 { font-size:2rem; margin:0 0 4px; }
+  #status { font:0.85rem system-ui, sans-serif; color:var(--muted); margin:0 0 20px; }
+  #status.err { color:var(--danger); }
+  form { display:flex; gap:8px; margin-bottom:18px; }
+  input[type=text] { flex:1; padding:12px; font:1rem system-ui, sans-serif; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); }
+  button { font:600 0.95rem system-ui, sans-serif; border:0; border-radius:8px; cursor:pointer; }
+  form button { background:var(--accent); color:#fff; padding:0 18px; }
+  ul { list-style:none; margin:0; padding:0; }
+  li { display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:8px; }
+  li span { flex:1; word-break:break-word; }
+  li.done span { text-decoration:line-through; color:var(--muted); }
+  li input { width:20px; height:20px; accent-color:var(--accent); }
+  li button { background:none; color:var(--danger); padding:6px 8px; }
+  .empty { color:var(--muted); font-style:italic; }
+  #auth input { display:block; width:100%; margin-bottom:10px; }
+  #auth button { width:100%; background:var(--accent); color:#fff; padding:12px; }
+  #auth .link { background:none; color:var(--accent); margin-top:6px; }
+  #bar { display:flex; justify-content:space-between; align-items:center; font:0.85rem system-ui, sans-serif; color:var(--muted); margin-bottom:14px; }
+  #bar button { background:none; color:var(--accent); }
+  .hidden { display:none !important; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mere Todos</h1>
+  <p id="status">Firebase se connect ho raha hai...</p>
+  <section id="auth" class="hidden">
+    <input type="email" id="email" placeholder="Email" autocomplete="email">
+    <input type="password" id="pass" placeholder="Password (kam se kam 6 akshar)" autocomplete="current-password">
+    <button id="authBtn">Login karo</button>
+    <button class="link" id="toggle">Naya account banao</button>
+  </section>
+  <div id="app" class="hidden">
+  <div id="bar"><span id="who"></span><button id="out">Logout</button></div>
+  <form id="form">
+    <input type="text" id="text" placeholder="Naya kaam likho" autocomplete="off" required>
+    <button type="submit">Jodo</button>
+  </form>
+  <ul id="list"></ul>
+  </div>
+</main>
+
+<script type="module">
+  // STEP A: Firebase ke tools import karo (ab Auth bhi)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, setDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // STEP B: Tumhare project ki pehchaan
+  const firebaseConfig = {
+    apiKey: "AIzaSyBjxqern4xx5IfWb-3KnEDJysXI3aKjQJI",
+    authDomain: "todo-learning-7eb8e.firebaseapp.com",
+    projectId: "todo-learning-7eb8e",
+    storageBucket: "todo-learning-7eb8e.firebasestorage.app",
+    messagingSenderId: "716563997241",
+    appId: "1:716563997241:web:26d9920b377b71e6d863e8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app); // login system ka handle
+  const db = getFirestore(app);
+
+  const $ = (id) => document.getElementById(id);
+  const list = $("list"), status = $("status");
+  let isSignup = false, unsub = null;
+
+  // STEP C: Login / Signup button
+  $("toggle").onclick = () => {
+    isSignup = !isSignup;
+    $("authBtn").textContent = isSignup ? "Account banao" : "Login karo";
+    $("toggle").textContent = isSignup ? "Pehle se account hai? Login karo" : "Naya account banao";
+  };
+  $("authBtn").onclick = async () => {
+    try {
+      const fn = isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword;
+      await fn(auth, $("email").value.trim(), $("pass").value);
+    } catch (err) { showError(err); }
+  };
+  $("out").onclick = () => signOut(auth);
+
+  // STEP D: Firebase batata hai ki user login hai ya nahi (ye sabse zaruri hissa hai)
+  onAuthStateChanged(auth, (user) => {
+    if (unsub) { unsub(); unsub = null; }
+    if (!user) {
+      $("auth").classList.remove("hidden");
+      $("app").classList.add("hidden");
+      status.textContent = "Login karo ya naya account banao.";
+      status.className = "";
+      return;
+    }
+    $("auth").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("who").textContent = user.email;
+    saveProfile(user);
+    startTodos(user.uid);
+  });
+
+  // LESSON 1: user ka profile document banao: users/<uid>
+  // setDoc = is jagah par document likho (na ho to bana do). merge:true = purane fields mat mitao.
+  function saveProfile(user) {
+    setDoc(doc(db, "users", user.uid),
+      { email: user.email, lastLogin: serverTimestamp() },
+      { merge: true }).catch(showError);
+  }
+
+  function startTodos(uid) {
+    // Har user ka apna folder: users/<uid>/todos. Dusre ka data yahan se nahi dikhega.
+    const todos = collection(db, "users", uid, "todos");
+
+    $("form").onsubmit = async (e) => {
+      e.preventDefault();
+      const text = $("text").value.trim();
+      if (!text) return;
+      $("text").value = "";
+      try { await addDoc(todos, { text, done: false, createdAt: serverTimestamp() }); }
+      catch (err) { showError(err); }
+    };
+
+    unsub = onSnapshot(query(todos, orderBy("createdAt", "desc")), (snap) => {
+      status.textContent = "Firebase se connected ✓";
+      status.className = "";
+      list.innerHTML = "";
+      if (snap.empty) list.innerHTML = '<li class="empty">Abhi koi kaam nahi. Upar se jodo.</li>';
+      snap.forEach((d) => {
+        const t = d.data();
+        const li = document.createElement("li");
+        if (t.done) li.className = "done";
+        const box = document.createElement("input");
+        box.type = "checkbox"; box.checked = t.done;
+        box.onchange = () => updateDoc(doc(db, "users", uid, "todos", d.id), { done: box.checked }).catch(showError);
+        const span = document.createElement("span");
+        span.textContent = t.text;
+        const del = document.createElement("button");
+        del.textContent = "Hatao";
+        del.onclick = () => deleteDoc(doc(db, "users", uid, "todos", d.id)).catch(showError);
+        li.append(box, span, del);
+        list.append(li);
+      });
+    }, showError);
+  }
+
+  function showError(err) {
+    const msgs = {
+      "auth/invalid-credential": "Email ya password galat hai.",
+      "auth/email-already-in-use": "Ye email pehle se registered hai. Login karo.",
+      "auth/weak-password": "Password kam se kam 6 akshar ka rakho.",
+      "auth/invalid-email": "Email sahi format mein likho.",
+      "permission-denied": "Rules is kaam ki ijazat nahi de rahe."
+    };
+    status.textContent = msgs[err.code] || ("Dikkat: " + err.code);
+    status.className = "err";
+    console.error(err);
+  }
+</script>
+</body>
+</html>
