@@ -57,6 +57,7 @@
   .u ul { list-style:none; margin:12px 0 0; padding:10px 0 0; border-top:1px solid var(--line); }
   .u li { padding:3px 0; font-size:.9rem; }
   .act { background:none; color:var(--danger); font-weight:600; font-size:.85rem; padding:6px 8px; }
+  .note p { word-break:normal; margin:6px 0 0; }
   footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:22px; }
   footer.err { color:var(--danger); }
   #toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,20px); background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:12px; font-weight:600; font-size:.9rem; opacity:0; pointer-events:none; transition:.25s; max-width:90%; text-align:center; z-index:9; }
@@ -85,9 +86,10 @@
       <div class="right"><button class="ghost hidden" id="adminBtn">Admin</button><button class="ghost" id="out">Logout</button></div>
     </header>
     <div class="card wallet"><span class="sub">Tumhare coins</span><b id="coins">0</b></div>
-    <div class="tabs"><button id="tV" class="on">Videos</button><button id="tW">Wallet</button></div>
+    <div class="tabs" style="grid-template-columns:1fr 1fr 1fr"><button id="tV" class="on">Videos</button><button id="tW">Wallet</button><button id="tS">Kharido</button></div>
     <div id="vList"></div>
     <div id="wList" class="hidden"></div>
+    <div id="sList" class="hidden"></div>
   </section>
 
   <section id="player" class="hidden">
@@ -125,6 +127,7 @@
   <footer id="status">Firebase se connect ho raha hai...</footer>
 </main>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
@@ -185,7 +188,7 @@
     if (!user) { uid = null; view("auth"); return; }
     uid = user.uid;
     $("who").textContent = user.email;
-    view("home");
+    view("home"); renderShop();
     setDoc(doc(db, "users", uid), { email: user.email, lastLogin: serverTimestamp() }, { merge: true }).catch(showError);
     getDoc(doc(db, "admins", uid)).then((s) => show("adminBtn", s.exists())).catch(() => show("adminBtn", false));
 
@@ -204,8 +207,48 @@
   });
 
   // ---- Home ----
-  $("tV").onclick = () => { $("tV").classList.add("on"); $("tW").classList.remove("on"); show("vList", true); show("wList", false); };
-  $("tW").onclick = () => { $("tW").classList.add("on"); $("tV").classList.remove("on"); show("vList", false); show("wList", true); };
+  const tabs = { tV: "vList", tW: "wList", tS: "sList" };
+  Object.keys(tabs).forEach((t) => ($(t).onclick = () => {
+    Object.keys(tabs).forEach((k) => { $(k).classList.toggle("on", k === t); show(tabs[k], k === t); });
+  }));
+
+  // ---- Kharido: Razorpay Checkout (TEST MODE, Stage 1) ----
+  const RZP_KEY = "rzp_test_U3Cc3c4eNtqji5"; // Key ID public hoti hai. Key Secret yahan kabhi nahi aayegi
+  const packs = [{ price: 10, coins: 100 }, { price: 50, coins: 600 }, { price: 100, coins: 1300 }];
+  let lastPay = "";
+  function renderShop() {
+    const box = $("sList"); box.textContent = "";
+    const note = el("div", "card note");
+    note.append(el("b", "", "Demo (Stage 1)"),
+      el("p", "sub", "Ye payment popup seekhne ke liye hai. Abhi coins nahi jud'te, wo Stage 2 mein server se jud'enge."),
+      el("p", "sub", "Test UPI: success@razorpay"),
+      el("p", "sub", "Test card: 5267 3181 8797 5449, koi bhi aage ki expiry aur koi bhi CVV"));
+    box.append(note);
+    packs.forEach((p) => {
+      const c = el("div", "card row"); const g = el("div", "grow");
+      g.append(el("b", "", p.coins + " coins"));
+      const b = el("button", "primary", "₹" + p.price + " mein kharido"); b.onclick = () => pay(p);
+      c.append(g, b); box.append(c);
+    });
+    if (lastPay) { const l = el("div", "card note"); l.append(el("b", "", "Aakhri payment safal ✓"), el("p", "sub", "Payment ID: " + lastPay)); box.append(l); }
+  }
+  function pay(p) {
+    if (!window.Razorpay) { toast("Razorpay load nahi hua. Internet check karo."); return; }
+    const rz = new window.Razorpay({
+      key: RZP_KEY,
+      amount: p.price * 100, // paise mein: ₹10 = 1000 paise
+      currency: "INR",
+      name: "Video Earn",
+      description: p.coins + " coins (test)",
+      prefill: { email: auth.currentUser ? auth.currentUser.email : "" },
+      theme: { color: "#1f5eff" },
+      // Payment safal hone par Razorpay ye function chalata hai aur payment ID deta hai
+      handler: (res) => { lastPay = res.razorpay_payment_id; toast("Payment safal ✓"); renderShop(); },
+      modal: { ondismiss: () => toast("Popup band hua") }
+    });
+    rz.on("payment.failed", (r) => toast("Payment fail: " + ((r.error && r.error.description) || "")));
+    rz.open();
+  }
 
   function renderVideos() {
     const box = $("vList"); box.textContent = "";
