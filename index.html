@@ -3,354 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<title>Video Earn</title>
+<meta name="theme-color" content="#1c2b4a">
+<title>Udhar Khata</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#eef1f7; --card:#fff; --ink:#101a30; --muted:#6a7690; --line:#e1e6ef; --accent:#1f5eff; --soft:#e8efff; --danger:#d6455d; --ok:#1f9d6b; --gold:#c98a00; --shadow:0 1px 2px rgba(16,26,48,.04), 0 8px 24px -12px rgba(16,26,48,.12); }
-  @media (prefers-color-scheme: dark) { :root { --bg:#0b101d; --card:#141b2d; --ink:#e8ecf6; --muted:#8a96b2; --line:#232d47; --accent:#5b8cff; --soft:#1a2748; --danger:#ff6b84; --ok:#3ecf94; --gold:#f2b84b; --shadow:none; } }
+  :root { --bg:#f3f5f8; --card:#fff; --ink:#0f1a2b; --muted:#6b7685; --line:#e4e8ee; --navy:#1c2b4a; --blue:#2f5bea; --red:#d64545; --green:#17944f; --soft:#e9eefc; }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:500 16px/1.5 Manrope, system-ui, sans-serif; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
-  main { max-width:560px; margin:0 auto; padding:24px 16px 56px; }
-  h1 { font-size:1.6rem; font-weight:800; letter-spacing:-.02em; margin:0; }
-  h2 { font-size:1.1rem; margin:22px 0 10px; }
-  .sub { color:var(--muted); font-size:.9rem; margin:2px 0 0; word-break:break-all; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:500 16px/1.5 Manrope, system-ui, sans-serif; font-variant-numeric:tabular-nums; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+  main { max-width:560px; margin:0 auto; padding:18px 16px 110px; }
+  h1 { font-size:1.4rem; font-weight:800; letter-spacing:-.02em; margin:0; }
+  h2 { font-size:1rem; margin:20px 0 10px; color:var(--muted); font-weight:700; }
+  .sub { color:var(--muted); font-size:.88rem; margin:2px 0 0; }
   .hidden { display:none !important; }
-  button { font:inherit; cursor:pointer; border:0; }
-  input[type=text], input[type=email], input[type=password], input[type=url], input[type=number] { width:100%; font:inherit; color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:12px 14px; }
-  input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--soft); }
-  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  .primary { background:var(--accent); color:#fff; font-weight:700; border-radius:12px; padding:12px 18px; }
-  .primary:disabled { opacity:.45; cursor:not-allowed; }
+  button { font:inherit; border:0; cursor:pointer; }
+  input, select { width:100%; font:inherit; color:var(--ink); background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:12px 14px; }
+  input:focus, select:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 4px var(--soft); }
+  :focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:12px; }
+  .primary { background:var(--navy); color:#fff; font-weight:700; border-radius:12px; padding:13px 18px; }
   .ghost { background:none; color:var(--muted); font-weight:600; font-size:.9rem; padding:8px 10px; border-radius:10px; }
-  .ghost:hover { background:var(--soft); color:var(--accent); }
-  .card { background:var(--card); border-radius:18px; box-shadow:var(--shadow); border:1px solid var(--line); padding:16px; margin-bottom:12px; }
-  header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
-  header .right { display:flex; gap:2px; flex-shrink:0; }
-  #boot { text-align:center; color:var(--muted); margin-top:30vh; }
-  #auth { padding:26px 22px; margin-top:8vh; }
-  #auth .sub { margin-bottom:20px; }
-  .tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:4px; margin-bottom:14px; }
-  .tabs button { background:none; color:var(--muted); font-weight:700; padding:10px; border-radius:9px; }
-  .tabs button.on { background:var(--soft); color:var(--accent); }
-  label { display:block; font-size:.85rem; font-weight:700; margin-bottom:12px; }
-  label input { margin-top:6px; font-weight:500; }
+  .ghost:hover { background:var(--soft); color:var(--blue); }
+  header { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:14px; }
+  #boot { display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:32vh; color:var(--muted); font-size:.9rem; }
+  #auth { margin-top:8vh; padding:24px 20px; }
+  #auth label { display:block; font-size:.85rem; font-weight:700; margin-bottom:12px; }
+  #auth label input { margin-top:6px; }
   #auth .primary { width:100%; }
-  .wallet { display:flex; align-items:baseline; justify-content:space-between; }
-  .wallet b { font-size:2.4rem; font-weight:800; letter-spacing:-.03em; color:var(--gold); }
-  .row { display:flex; align-items:center; gap:12px; }
-  .grow { flex:1; min-width:0; }
-  .grow b { display:block; word-break:break-word; }
-  .chips { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
-  .chip { font-size:.75rem; font-weight:700; padding:2px 9px; border-radius:99px; background:var(--soft); color:var(--accent); }
-  .chip.gold { background:rgba(201,138,0,.14); color:var(--gold); }
-  .done { color:var(--ok); font-weight:700; font-size:.85rem; }
-  .empty { text-align:center; color:var(--muted); border-style:dashed; box-shadow:none; }
-  .amt { font-weight:800; color:var(--ok); }
-  video { width:100%; border-radius:12px; background:#000; aspect-ratio:16/9; display:block; }
-  .bar { height:8px; background:var(--soft); border-radius:99px; margin:14px 0 6px; overflow:hidden; }
-  .bar i { display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s; }
-  .btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
-  .u > button { width:100%; display:flex; align-items:center; gap:12px; text-align:left; background:none; color:var(--ink); padding:0; }
-  .av { width:38px; height:38px; border-radius:50%; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
-  .u ul { list-style:none; margin:12px 0 0; padding:10px 0 0; border-top:1px solid var(--line); }
-  .u li { padding:3px 0; font-size:.9rem; }
-  .act { background:none; color:var(--danger); font-weight:600; font-size:.85rem; padding:6px 8px; }
-  .note p { word-break:normal; margin:6px 0 0; }
-  footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:22px; }
-  footer.err { color:var(--danger); }
-  #toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,20px); background:var(--ink); color:var(--bg); padding:12px 18px; border-radius:12px; font-weight:600; font-size:.9rem; opacity:0; pointer-events:none; transition:.25s; max-width:90%; text-align:center; z-index:9; }
+  .tabs { display:grid; grid-template-columns:1fr 1fr; background:var(--bg); border-radius:12px; padding:4px; margin:16px 0; }
+  .tabs button { background:none; color:var(--muted); font-weight:700; padding:10px; border-radius:9px; }
+  .tabs button.on { background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .hero { background:linear-gradient(150deg, var(--navy), #2b4170); color:#fff; border-radius:20px; padding:20px; margin-bottom:14px; }
+  .hero span { opacity:.8; font-size:.88rem; }
+  .hero b { display:block; font-size:2.5rem; font-weight:800; letter-spacing:-.03em; line-height:1.15; margin:2px 0 10px; }
+  .hero .mini { display:flex; gap:18px; font-size:.85rem; opacity:.9; }
+  .tools { display:grid; grid-template-columns:1.4fr 1fr; gap:8px; margin-bottom:12px; }
+  .row { display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px; margin-bottom:8px; color:var(--ink); }
+  .av { width:42px; height:42px; border-radius:50%; background:var(--soft); color:var(--blue); display:grid; place-items:center; font-weight:800; flex-shrink:0; }
+  .grow { flex:1; min-width:0; } .grow b { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .amt { font-weight:800; text-align:right; white-space:nowrap; } .amt small { display:block; font-weight:600; font-size:.72rem; color:var(--muted); }
+  .red { color:var(--red); } .green { color:var(--green); } .zero { color:var(--muted); }
+  .empty { text-align:center; color:var(--muted); border-style:dashed; padding:28px 16px; }
+  .fab { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(18px + env(safe-area-inset-bottom)); background:var(--navy); color:#fff; font-weight:700; padding:15px 26px; border-radius:99px; box-shadow:0 10px 24px -8px rgba(28,43,74,.6); z-index:5; }
+  .prof { display:flex; align-items:center; gap:14px; }
+  .bal { text-align:center; } .bal span { color:var(--muted); font-size:.88rem; } .bal b { display:block; font-size:2.1rem; font-weight:800; letter-spacing:-.02em; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+  .btn { color:#fff; font-weight:800; border-radius:14px; padding:16px 10px; }
+  .btn.r { background:var(--red); } .btn.g { background:var(--green); }
+  .acts { display:flex; gap:8px; flex-wrap:wrap; }
+  .acts a, .acts button { text-decoration:none; background:var(--card); border:1px solid var(--line); color:var(--ink); font-weight:700; font-size:.85rem; padding:9px 14px; border-radius:10px; }
+  .ent { display:flex; gap:12px; align-items:center; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:11px 14px; margin-bottom:8px; color:var(--ink); }
+  .ent small { color:var(--muted); display:block; font-size:.78rem; word-break:break-word; }
+  .sheet { position:fixed; inset:0; background:rgba(15,26,43,.5); display:flex; align-items:flex-end; z-index:20; }
+  .panel { background:var(--card); width:100%; max-width:560px; margin:0 auto; border-radius:22px 22px 0 0; padding:20px 18px calc(20px + env(safe-area-inset-bottom)); }
+  .panel h3 { margin:0 0 14px; font-size:1.2rem; }
+  .panel label { display:block; font-size:.82rem; font-weight:700; margin-bottom:12px; } .panel label input { margin-top:6px; }
+  .panel .bt { display:flex; gap:8px; margin-top:6px; } .panel .bt .primary { flex:1; }
+  .danger { background:#fdecec; color:var(--red); font-weight:700; border-radius:12px; padding:13px 16px; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b111d; --card:#131b2c; --ink:#e7ecf5; --muted:#8a96ab; --line:#222e45; --navy:#2d4a86; --blue:#7b9cff; --red:#ff7676; --green:#3dd283; --soft:#1b2a4c; } .danger { background:#3a1d21; } .hero { background:linear-gradient(150deg,#1d3566,#2d4a86); } }
+  .chips { display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; padding-bottom:2px; }
+  .chips button { background:var(--card); border:1px solid var(--line); border-radius:99px; padding:7px 14px; font-weight:700; font-size:.82rem; color:var(--muted); white-space:nowrap; }
+  .chips button.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .ln { display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:.95rem; } .ln b { text-align:right; }
+  #lockS { margin-top:14vh; text-align:center; padding:28px 20px; } #lockS input { text-align:center; font-size:1.6rem; letter-spacing:.5em; margin:16px 0 10px; }
+  .only-print { display:none; }
+  @media print { body { background:#fff; color:#000; } .only-print { display:block; font-weight:700; margin-bottom:10px; } header, .two, .acts, .fab, footer, #toast, #sheet { display:none !important; } .card, .ent { border-color:#bbb; } }
+  .spin { width:44px; height:44px; border:4px solid var(--line); border-top-color:var(--blue); border-radius:50%; animation:sp .8s linear infinite; }
+  .loading { display:flex; justify-content:center; padding:40px 0; }
+  .busy::after { content:""; display:inline-block; width:14px; height:14px; margin-left:8px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; vertical-align:-2px; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin, .busy::after { animation-duration:2.4s; } }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; margin-top:18px; } footer.err { color:var(--red); }
+  #toast { position:fixed; left:50%; top:calc(14px + env(safe-area-inset-top)); transform:translate(-50%,-20px); background:var(--ink); color:#fff; padding:12px 18px; border-radius:12px; font-weight:600; font-size:.9rem; opacity:0; pointer-events:none; transition:.25s; z-index:30; max-width:90%; text-align:center; }
   #toast.show { opacity:1; transform:translate(-50%,0); }
 </style>
 </head>
 <body>
 <div id="toast" role="status"></div>
 <main>
-  <p id="boot">Load ho raha hai...</p>
+  <div id="boot" role="status" aria-label="Load ho raha hai"><div class="spin"></div><p id="slow" class="hidden">Net dheema hai, thoda ruko...</p></div>
 
   <section id="auth" class="card hidden">
-    <h1>Video Earn</h1>
-    <p class="sub">Video dekho, coins kamao. (Abhi nakli coins, seekhne ke liye)</p>
-    <div class="tabs"><button id="tabLogin" class="on" type="button">Login</button><button id="tabSignup" type="button">Naya account</button></div>
-    <form id="authForm">
-      <label>Email<input type="email" id="email" autocomplete="email" required></label>
-      <label>Password<input type="password" id="pass" autocomplete="current-password" minlength="6" required></label>
-      <button class="primary" id="authBtn">Login karo</button>
+    <h1>Udhar Khata</h1><p class="sub">Dukaan ka hisaab, ek jagah, surakshit.</p>
+    <div class="tabs"><button id="tL" class="on" type="button">Login</button><button id="tS" type="button">Naya account</button></div>
+    <form id="af">
+      <label>Email<input type="email" id="em" autocomplete="email" required></label>
+      <label>Password<input type="password" id="pw" minlength="6" autocomplete="current-password" required></label>
+      <button class="primary" id="ab">Login karo</button>
     </form>
+  </section>
+
+  <section id="lockS" class="card hidden">
+    <h1>Udhar Khata</h1><p class="sub">PIN daalo</p>
+    <input id="pin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="PIN">
+    <button class="ghost" id="lout">PIN bhool gaye? Logout</button>
   </section>
 
   <section id="home" class="hidden">
-    <header>
-      <div><h1>Video Earn</h1><p class="sub" id="who"></p></div>
-      <div class="right"><button class="ghost hidden" id="adminBtn">Admin</button><button class="ghost" id="out">Logout</button></div>
-    </header>
-    <div class="card wallet"><span class="sub">Tumhare coins</span><b id="coins">0</b></div>
-    <div class="tabs" style="grid-template-columns:1fr 1fr 1fr"><button id="tV" class="on">Videos</button><button id="tW">Wallet</button><button id="tS">Kharido</button></div>
-    <div id="vList"></div>
-    <div id="wList" class="hidden"></div>
-    <div id="sList" class="hidden"></div>
+    <header><div><h1 id="shop">Meri Dukaan</h1><p class="sub" id="who"></p></div><div><button class="ghost" id="eShop">Naam</button><button class="ghost" id="out">Logout</button></div></header>
+    <div class="hero"><span>Kul baki (aapko lena hai)</span><b id="tot">₹0</b><div class="mini"><span id="cN">0 grahak</span><span id="dN">0 ke paas baki</span></div><div class="mini" style="margin-top:6px"><span id="tdG"></span><span id="tdR"></span></div></div>
+    <div class="tools"><input id="q" placeholder="Grahak dhundo" aria-label="Grahak dhundo"><select id="sort" aria-label="Sort"><option value="due">Zyada baki</option><option value="name">Naam A-Z</option><option value="recent">Naya</option><option value="wada">Wada tareekh</option></select></div>
+    <div class="chips" id="chips"></div>
+    <div id="cList"></div>
+    <div class="acts" style="margin-top:14px"><button id="rep">Hisaab-kitab</button><button id="csv">Backup (Excel)</button><button id="pinB">PIN lock</button></div>
+    <button class="fab" id="addC">+ Naya grahak</button>
   </section>
 
-  <section id="player" class="hidden">
-    <header>
-      <div><h1 id="pTitle"></h1><p class="sub" id="pSub"></p></div>
-      <div class="right"><button class="ghost" id="pBack">Wapas</button></div>
-    </header>
-    <div class="card">
-      <video id="vid" playsinline controlsList="nodownload"></video>
-      <div class="bar"><i id="pFill"></i></div>
-      <p class="sub" id="pTxt"></p>
-      <div class="btns"><button class="primary" id="pPlay">Chalao</button><button class="primary" id="claim" disabled>Coins lo</button></div>
-    </div>
+  <section id="cust" class="hidden">
+    <header><button class="ghost" id="back">← Wapas</button><button class="ghost" id="cEdit">Badlo</button></header>
+    <p class="only-print" id="prH"></p><div class="card prof"><span class="av" id="cAv"></span><div class="grow"><h1 id="cName"></h1><p class="sub" id="cPhone"></p><p class="sub" id="cDue"></p></div></div>
+    <div class="card bal"><span id="bL"></span><b id="bal"></b></div>
+    <div class="two"><button class="btn r" id="gB">Udhar diya</button><button class="btn g" id="rB">Jama mila</button></div>
+    <div class="acts"><a id="callA">Call</a><a id="smsA">SMS</a><button id="remB">WhatsApp reminder</button><button id="stB">Hisaab bhejo</button><button id="prB">PDF</button></div>
+    <h2>Len-den</h2><div id="eList"></div>
   </section>
-
-  <section id="admin" class="hidden">
-    <header>
-      <div><h1>Admin</h1><p class="sub">Videos jodo aur users dekho</p></div>
-      <div class="right"><button class="ghost" id="aBack">Wapas</button></div>
-    </header>
-    <form id="vForm" class="card">
-      <label>Video ka naam<input type="text" id="vt" required></label>
-      <label>Video link (seedha .mp4)<input type="url" id="vu" placeholder="https://..." required></label>
-      <div class="btns">
-        <label>Coins<input type="number" id="vr" min="1" max="1000" value="10" required></label>
-        <label>Kitne second dekhna hai<input type="number" id="vs" min="5" max="600" value="15" required></label>
-      </div>
-      <button class="primary" style="width:100%">Video jodo</button>
-    </form>
-    <div id="aVids"></div>
-    <h2>Users</h2>
-    <div id="users"></div>
-  </section>
-
-  <footer id="status">Firebase se connect ho raha hai...</footer>
+  <footer id="status"></footer>
 </main>
+<div id="sheet" class="sheet hidden"><div class="panel"><h3 id="shT"></h3><form id="shF"></form></div></div>
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { initializeFirestore, getFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, setDoc, addDoc, getDocs, onSnapshot, query, where, writeBatch, increment, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = {
+  const app = initializeApp({
     apiKey: "AIzaSyBjxqern4xx5IfWb-3KnEDJysXI3aKjQJI",
     authDomain: "todo-learning-7eb8e.firebaseapp.com",
     projectId: "todo-learning-7eb8e",
     storageBucket: "todo-learning-7eb8e.firebasestorage.app",
     messagingSenderId: "716563997241",
     appId: "1:716563997241:web:26d9920b377b71e6d863e8"
-  };
-  const app = initializeApp(firebaseConfig);
+  });
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  // Offline support: net na ho tab bhi likh sakte ho, net aate hi sync ho jata hai
+  let db;
+  try { db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) }); }
+  catch (e) { db = getFirestore(app); }
 
   const $ = (id) => document.getElementById(id);
   const show = (id, on) => $(id).classList.toggle("hidden", !on);
-  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
-  const initial = (e) => (e || "?")[0].toUpperCase();
-  const when = (ts) => ts ? ts.toDate().toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "abhi";
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const rs = (n) => "₹" + Math.abs(n).toLocaleString("en-IN");
+  const spin = () => { const d = el("div", "loading"); d.append(el("div", "spin")); return d; }; // ghumta hua circle
+  const dshort = (s) => new Date(s + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  const today = () => new Date().toLocaleDateString("en-CA");
+  const ms = (t) => (t && t.toMillis ? t.toMillis() : Date.now());
+  let uid = null, shop = "Meri Dukaan", custs = [], cur = null, entries = [], unsubs = [], unsubE = null, isSignup = false, tt, days = [], flt = "all", curView = "auth", prevView = "home", hidAt = 0, loaded = false, eLoaded = false;
 
-  let uid = null, isSignup = false, unsubs = [], videos = [], rewards = [], cur = null, watched = 0, maxT = 0, tick = null, tt;
+  const msgs = { "auth/invalid-credential": "Email ya password galat hai.", "auth/email-already-in-use": "Ye email pehle se hai. Login karo.", "auth/weak-password": "Password kam se kam 6 akshar ka rakho.", "auth/invalid-email": "Email sahi format mein likho.", "permission-denied": "Ijazat nahi mili (rules check karein)." };
+  function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 3200); }
+  function showError(err) { console.error(err); toast(msgs[err.code] || "Dikkat: " + (err.code || err.message)); }
+  const view = (n) => { if (n !== "lockS") curView = n; ["auth", "home", "cust", "lockS"].forEach((v) => show(v, v === n)); show("boot", false); window.scrollTo(0, 0); };
+  const path = (...p) => ["users", uid, ...p];
+  const custRef = (id) => doc(db, ...path("customers", id));
 
-  const msgs = {
-    "auth/invalid-credential": "Email ya password galat hai.",
-    "auth/email-already-in-use": "Ye email pehle se registered hai. Login karo.",
-    "auth/weak-password": "Password kam se kam 6 akshar ka rakho.",
-    "auth/invalid-email": "Email sahi format mein likho.",
-    "permission-denied": "Ijazat nahi mili (shayad coins pehle mil chuke hain)."
+  setTimeout(() => { if (!$("boot").classList.contains("hidden")) show("slow", true); }, 10000);
+
+  // ---------- Login ----------
+  function setMode(s) { isSignup = s; $("tL").classList.toggle("on", !s); $("tS").classList.toggle("on", s); $("ab").textContent = s ? "Account banao" : "Login karo"; $("pw").autocomplete = s ? "new-password" : "current-password"; }
+  $("tL").onclick = () => setMode(false); $("tS").onclick = () => setMode(true);
+  $("af").onsubmit = async (e) => {
+    e.preventDefault(); $("ab").disabled = true; $("ab").classList.add("busy");
+    try { await (isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, $("em").value.trim(), $("pw").value); } catch (err) { showError(err); }
+    $("ab").disabled = false; $("ab").classList.remove("busy");
   };
-  function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 3500); }
-  function showError(err) { console.error(err); toast(msgs[err.code] || ("Dikkat: " + (err.code || err.message))); }
-  function view(n) { ["auth", "home", "player", "admin"].forEach((v) => show(v, v === n)); show("boot", false); }
-
-  // ---- Login ----
-  function setMode(s) {
-    isSignup = s;
-    $("tabLogin").classList.toggle("on", !s); $("tabSignup").classList.toggle("on", s);
-    $("authBtn").textContent = s ? "Account banao" : "Login karo";
-    $("pass").autocomplete = s ? "new-password" : "current-password";
-  }
-  $("tabLogin").onclick = () => setMode(false);
-  $("tabSignup").onclick = () => setMode(true);
-  $("authForm").onsubmit = async (e) => {
-    e.preventDefault(); $("authBtn").disabled = true;
-    try { await (isSignup ? createUserWithEmailAndPassword : signInWithEmailAndPassword)(auth, $("email").value.trim(), $("pass").value); }
-    catch (err) { showError(err); }
-    $("authBtn").disabled = false;
-  };
-  $("out").onclick = () => signOut(auth);
+  $("out").onclick = () => { localStorage.removeItem("ukpin"); signOut(auth); }; // logout par PIN bhi hat jata hai
 
   onAuthStateChanged(auth, (user) => {
-    unsubs.forEach((f) => f()); unsubs = []; clearInterval(tick);
+    unsubs.forEach((f) => f()); unsubs = []; if (unsubE) { unsubE(); unsubE = null; } cur = null; loaded = false;
     if (!user) { uid = null; view("auth"); return; }
-    uid = user.uid;
-    $("who").textContent = user.email;
-    view("home"); renderShop();
-    setDoc(doc(db, "users", uid), { email: user.email, lastLogin: serverTimestamp() }, { merge: true }).catch(showError);
-    getDoc(doc(db, "admins", uid)).then((s) => show("adminBtn", s.exists())).catch(() => show("adminBtn", false));
-
-    // Live: saare videos (sab padh sakte hain)
-    unsubs.push(onSnapshot(query(collection(db, "videos"), orderBy("createdAt", "desc")), (s) => {
-      videos = s.docs.map((d) => ({ id: d.id, ...d.data() }));
-      renderVideos(); renderAdminVideos();
-    }, showError));
-    // Live: sirf is user ke rewards (ledger). Balance inhi ko jod kar nikalta hai
-    unsubs.push(onSnapshot(query(collection(db, "users", uid, "rewards"), orderBy("createdAt", "desc")), (s) => {
-      rewards = s.docs.map((d) => ({ id: d.id, ...d.data() }));
-      $("coins").textContent = rewards.reduce((a, r) => a + (r.amount || 0), 0);
-      $("status").textContent = "● Firebase se connected"; $("status").className = "";
-      renderWallet(); renderVideos();
+    uid = user.uid; $("who").textContent = user.email; enter();
+    unsubs.push(onSnapshot(doc(db, "users", uid), (s) => { shop = (s.data() && s.data().shop) || "Meri Dukaan"; $("shop").textContent = shop; }, showError));
+    // Roz ka total alag se rakha hai (days), taaki aaj/mahine ka hisaab ek hi chhoti query se aa jaye
+    unsubs.push(onSnapshot(query(collection(db, ...path("days")), where("month", "==", today().slice(0, 7))), (s) => { days = s.docs.map((d) => d.data()); renderHome(); }, showError));
+    unsubs.push(onSnapshot(query(collection(db, ...path("customers"))), (s) => {
+      loaded = true; custs = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      $("status").textContent = "● Connected" + (s.metadata.fromCache ? " (offline copy)" : ""); $("status").className = "";
+      renderHome(); if (cur) renderCust();
     }, showError));
   });
 
-  // ---- Home ----
-  const tabs = { tV: "vList", tW: "wList", tS: "sList" };
-  Object.keys(tabs).forEach((t) => ($(t).onclick = () => {
-    Object.keys(tabs).forEach((k) => { $(k).classList.toggle("on", k === t); show(tabs[k], k === t); });
-  }));
+  // ---------- Sheet (neeche se khulne wala form) ----------
+  function sheet(title, fields, onOk, onDel) {
+    $("shT").textContent = title; const f = $("shF"); f.textContent = "";
+    fields.forEach((x) => { const l = el("label", "", x.label), i = el("input"); i.id = "f_" + x.k; i.type = x.type || "text"; i.value = x.value == null ? "" : x.value; if (x.req) i.required = true; if (x.min) i.min = x.min; if (x.mode) i.inputMode = x.mode; if (x.max) i.maxLength = x.max; l.append(i); f.append(l); });
+    const bt = el("div", "bt"), ok = el("button", "primary", "Save"), no = el("button", "ghost", "Band"); no.type = "button"; no.onclick = closeSheet;
+    bt.append(ok, no); if (onDel) { const d = el("button", "danger", "Hatao"); d.type = "button"; d.onclick = () => { if (confirm("Pakka hatana hai?")) { onDel(); closeSheet(); } }; bt.append(d); }
+    f.append(bt);
+    f.onsubmit = (e) => { e.preventDefault(); const v = {}; fields.forEach((x) => (v[x.k] = $("f_" + x.k).value.trim())); if (onOk(v) !== false) closeSheet(); };
+    show("sheet", true); setTimeout(() => { const i = f.querySelector("input"); if (i) i.focus(); }, 50);
+  }
+  function closeSheet() { show("sheet", false); }
+  $("sheet").onclick = (e) => { if (e.target === $("sheet")) closeSheet(); };
 
-  // ---- Kharido: Razorpay Checkout (TEST MODE, Stage 1) ----
-  const RZP_KEY = "rzp_test_U3Cc3c4eNtqji5"; // Key ID public hoti hai. Key Secret yahan kabhi nahi aayegi
-  const packs = [{ price: 10, coins: 100 }, { price: 50, coins: 600 }, { price: 100, coins: 1300 }];
-  let lastPay = "";
-  function renderShop() {
-    const box = $("sList"); box.textContent = "";
-    const note = el("div", "card note");
-    note.append(el("b", "", "Demo (Stage 1)"),
-      el("p", "sub", "Ye payment popup seekhne ke liye hai. Abhi coins nahi jud'te, wo Stage 2 mein server se jud'enge."),
-      el("p", "sub", "Test UPI: success@razorpay"),
-      el("p", "sub", "Test card: 5267 3181 8797 5449, koi bhi aage ki expiry aur koi bhi CVV"));
-    box.append(note);
-    packs.forEach((p) => {
-      const c = el("div", "card row"); const g = el("div", "grow");
-      g.append(el("b", "", p.coins + " coins"));
-      const b = el("button", "primary", "₹" + p.price + " mein kharido"); b.onclick = () => pay(p);
-      c.append(g, b); box.append(c);
-    });
-    if (lastPay) { const l = el("div", "card note"); l.append(el("b", "", "Aakhri payment safal ✓"), el("p", "sub", "Payment ID: " + lastPay)); box.append(l); }
-  }
-  function pay(p) {
-    if (!window.Razorpay) { toast("Razorpay load nahi hua. Internet check karo."); return; }
-    const rz = new window.Razorpay({
-      key: RZP_KEY,
-      amount: p.price * 100, // paise mein: ₹10 = 1000 paise
-      currency: "INR",
-      name: "Video Earn",
-      description: p.coins + " coins (test)",
-      prefill: { email: auth.currentUser ? auth.currentUser.email : "" },
-      theme: { color: "#1f5eff" },
-      // Payment safal hone par Razorpay ye function chalata hai aur payment ID deta hai
-      handler: (res) => { lastPay = res.razorpay_payment_id; toast("Payment safal ✓"); renderShop(); },
-      modal: { ondismiss: () => toast("Popup band hua") }
-    });
-    rz.on("payment.failed", (r) => toast("Payment fail: " + ((r.error && r.error.description) || "")));
-    rz.open();
-  }
-
-  function renderVideos() {
-    const box = $("vList"); box.textContent = "";
-    if (!videos.length) { box.append(el("div", "card empty", "Abhi koi video nahi. Admin se video jodne ko kaho.")); return; }
-    const got = new Set(rewards.map((r) => r.id));
-    videos.forEach((v) => {
-      const c = el("div", "card row");
-      const g = el("div", "grow"); g.append(el("b", "", v.title));
-      const chips = el("div", "chips"); chips.append(el("span", "chip gold", "+" + v.reward + " coins"), el("span", "chip", v.seconds + " second"));
-      g.append(chips);
-      c.append(g);
-      if (got.has(v.id)) c.append(el("span", "done", "✓ Mil gaye"));
-      else { const b = el("button", "primary", "Dekho"); b.onclick = () => openPlayer(v); c.append(b); }
-      box.append(c);
-    });
-  }
-  function renderWallet() {
-    const box = $("wList"); box.textContent = "";
-    box.append(el("p", "sub", "Ye nakli coins hain, seekhne ke liye. Har coin ka hisaab yahan likha rehta hai (ledger)."));
-    if (!rewards.length) { box.append(el("div", "card empty", "Abhi koi kamai nahi.")); return; }
-    rewards.forEach((r) => {
-      const c = el("div", "card row"); const g = el("div", "grow"); g.append(el("b", "", r.title || "Video"), el("span", "sub", when(r.createdAt)));
-      c.append(g, el("span", "amt", "+" + r.amount)); box.append(c);
-    });
-  }
-
-  // ---- Player ----
-  const vid = $("vid");
-  function upd() {
-    $("pFill").style.width = Math.min(100, Math.round(watched / cur.seconds * 100)) + "%";
-    const ok = watched >= cur.seconds;
-    $("pTxt").textContent = ok ? "Poora dekh liya! Ab coins lo." : watched + " / " + cur.seconds + " second dekhe";
-    $("claim").disabled = !ok;
-  }
-  function openPlayer(v) {
-    cur = v; watched = 0; maxT = 0;
-    $("pTitle").textContent = v.title; $("pSub").textContent = "Poora dekho, phir +" + v.reward + " coins milenge";
-    vid.src = v.url; $("pPlay").textContent = "Chalao"; upd(); view("player");
-    clearInterval(tick);
-    // Har second check: video chal raha hai aur screen par hai tabhi second gino
-    tick = setInterval(() => { if (!vid.paused && !vid.ended && !document.hidden) { watched++; upd(); } }, 1000);
-  }
-  function backHome() { clearInterval(tick); vid.pause(); vid.removeAttribute("src"); vid.load(); view("home"); }
-  $("pBack").onclick = backHome;
-  $("pPlay").onclick = () => (vid.paused ? vid.play() : vid.pause());
-  vid.onplay = () => ($("pPlay").textContent = "Roko");
-  vid.onpause = () => ($("pPlay").textContent = "Chalao");
-  vid.onerror = () => { if (vid.getAttribute("src")) toast("Video load nahi hua. Link check karo."); };
-  vid.ontimeupdate = () => { if (vid.currentTime > maxT) maxT = vid.currentTime; };
-  vid.onseeking = () => { if (vid.currentTime > maxT + 1) vid.currentTime = maxT; }; // aage skip nahi
-  document.addEventListener("visibilitychange", () => { if (document.hidden) vid.pause(); });
-
-  $("claim").onclick = async () => {
-    $("claim").disabled = true;
-    try {
-      // Document ki ID = video ki ID, isliye ek video ka reward ek hi baar ban sakta hai
-      await setDoc(doc(db, "users", uid, "rewards", cur.id), { amount: cur.reward, title: cur.title, createdAt: serverTimestamp() });
-      toast("+" + cur.reward + " coins mil gaye 🎉"); backHome();
-    } catch (err) { showError(err); }
+  // ---------- PIN lock ----------
+  const PINKEY = "ukpin";
+  const hasPin = () => !!localStorage.getItem(PINKEY);
+  async function sha(t) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("uk:" + uid + ":" + t)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join(""); }
+  function enter() { if (hasPin()) { prevView = "home"; $("pin").value = ""; view("lockS"); } else view("home"); }
+  $("pin").oninput = async () => {
+    const v = $("pin").value; if (v.length < 4) return;
+    if ((await sha(v)) === localStorage.getItem(PINKEY)) { $("pin").value = ""; view(prevView); } else { toast("Galat PIN"); $("pin").value = ""; }
   };
-
-  // ---- Admin ----
-  $("adminBtn").onclick = () => { view("admin"); loadUsers(); };
-  $("aBack").onclick = () => view("home");
-  $("vForm").onsubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await addDoc(collection(db, "videos"), { title: $("vt").value.trim(), url: $("vu").value.trim(), reward: Number($("vr").value), seconds: Number($("vs").value), createdAt: serverTimestamp() });
-      $("vForm").reset(); $("vr").value = 10; $("vs").value = 15; toast("Video jud gaya");
-    } catch (err) { showError(err); }
-  };
-  function renderAdminVideos() {
-    const box = $("aVids"); box.textContent = "";
-    videos.forEach((v) => {
-      const c = el("div", "card row"); const g = el("div", "grow"); g.append(el("b", "", v.title), el("span", "sub", v.reward + " coins · " + v.seconds + " second"));
-      const d = el("button", "act", "Hatao"); d.onclick = () => deleteDoc(doc(db, "videos", v.id)).catch(showError);
-      c.append(g, d); box.append(c);
-    });
-  }
-  async function loadUsers() {
-    const box = $("users"); box.textContent = "Load ho raha hai...";
-    try {
-      const snap = await getDocs(collection(db, "users")); box.textContent = "";
-      snap.forEach((u) => {
-        const data = u.data(); const card = el("div", "card u"); const head = el("button");
-        const g = el("div", "grow"); g.append(el("b", "", data.email || u.id), el("span", "sub", "Last login: " + when(data.lastLogin)));
-        head.append(el("span", "av", initial(data.email)), g);
-        const ul = el("ul", "hidden");
-        head.onclick = async () => {
-          if (!ul.classList.contains("hidden")) { ul.classList.add("hidden"); return; }
-          ul.textContent = "";
-          try {
-            const rs = await getDocs(collection(db, "users", u.id, "rewards")); let total = 0;
-            rs.forEach((r) => { total += r.data().amount || 0; ul.append(el("li", "", "• " + (r.data().title || "Video") + "  +" + r.data().amount)); });
-            ul.prepend(el("li", "amt", "Total: " + total + " coins"));
-            ul.classList.remove("hidden");
-          } catch (err) { showError(err); }
-        };
-        card.append(head, ul); box.append(card);
+  $("lout").onclick = () => $("out").onclick();
+  // 30 second se zyada door rehne ke baad wapas aane par dobara lock
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) hidAt = Date.now();
+    else if (uid && hasPin() && curView !== "lockS" && Date.now() - hidAt > 30000) { prevView = curView; view("lockS"); }
+  });
+  $("pinB").onclick = () => {
+    const has = hasPin();
+    sheet(has ? "PIN badlo ya hatao" : "PIN lock lagao",
+      (has ? [{ k: "o", label: "Purana PIN", type: "password", mode: "numeric", max: 4, req: 1 }] : []).concat([{ k: "n", label: has ? "Naya PIN (khaali = PIN hata do)" : "Naya PIN (4 ank)", type: "password", mode: "numeric", max: 4, req: !has }]),
+      (v) => {
+        if (v.n && !/^\d{4}$/.test(v.n)) { toast("PIN 4 ank ka hona chahiye."); return false; }
+        (async () => {
+          if (has && (await sha(v.o)) !== localStorage.getItem(PINKEY)) return toast("Purana PIN galat hai.");
+          if (v.n) { localStorage.setItem(PINKEY, await sha(v.n)); toast("PIN lag gaya"); } else { localStorage.removeItem(PINKEY); toast("PIN hata diya"); }
+        })();
       });
-    } catch (err) { showError(err); }
+  };
+
+  // ---------- Hisaab-kitab, Backup, PDF ----------
+  function info(title, rows) {
+    $("shT").textContent = title; const f = $("shF"); f.textContent = "";
+    rows.forEach(([a, b]) => { const r = el("div", "ln"); r.append(el("span", "", a), el("b", "", b)); f.append(r); });
+    const x = el("button", "primary", "Theek hai"); x.type = "button"; x.style.marginTop = "14px"; x.style.width = "100%"; x.onclick = closeSheet;
+    f.onsubmit = (e) => e.preventDefault(); f.append(x); show("sheet", true);
   }
+  $("rep").onclick = () => {
+    const t = days.find((d) => d.date === today()) || {}, m = days.reduce((a, d) => ({ g: a.g + (d.given || 0), r: a.r + (d.received || 0) }), { g: 0, r: 0 });
+    const top = custs.filter((c) => (c.balance || 0) > 0).sort((a, b) => b.balance - a.balance).slice(0, 5);
+    info("Hisaab-kitab", [["Aaj udhar diya", rs(t.given || 0)], ["Aaj jama mila", rs(t.received || 0)], ["Is mahine udhar diya", rs(m.g)], ["Is mahine jama mila", rs(m.r)],
+      ["Is mahine baki " + (m.g >= m.r ? "badha" : "ghata"), rs(m.g - m.r)], ...top.map((c, i) => ["Baki #" + (i + 1) + " " + c.name, rs(c.balance)])]);
+  };
+  $("csv").onclick = async () => {
+    toast("Backup ban raha hai...");
+    try {
+      const rows = [["Grahak", "Mobile", "Tareekh", "Prakar", "Rakam", "Note"]];
+      for (const c of custs) {
+        const s = await getDocs(collection(db, ...path("customers", c.id, "entries")));
+        s.docs.map((d) => d.data()).sort((a, b) => a.date.localeCompare(b.date)).forEach((e) => rows.push([c.name, c.phone || "", e.date, e.type === "given" ? "Udhar diya" : "Jama mila", e.amount, e.note || ""]));
+        rows.push([c.name, c.phone || "", "", "Kul baki", c.balance || 0, ""]);
+      }
+      const csv = "\ufeff" + rows.map((r) => r.map((x) => '"' + String(x).replace(/"/g, '""') + '"').join(",")).join("\n");
+      const a = el("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "udhar-khata-" + today() + ".csv"; a.click();
+      toast("Backup download ho gaya");
+    } catch (err) { showError(err); }
+  };
+  $("prB").onclick = () => { $("prH").textContent = shop + " · " + C().name + " ji ka hisaab · " + dshort(today()); window.print(); };
+
+  // ---------- Home ----------
+  $("q").oninput = $("sort").onchange = () => renderHome();
+  $("eShop").onclick = () => sheet("Dukaan ka naam", [{ k: "n", label: "Naam", value: shop, req: 1, max: 40 }], (v) => { setDoc(doc(db, "users", uid), { shop: v.n }, { merge: true }).catch(showError); });
+  function renderHome() {
+    if (!loaded) { $("tot").textContent = "—"; ["cN", "dN", "tdG", "tdR"].forEach((i) => ($(i).textContent = "")); $("cList").textContent = ""; $("cList").append(spin()); return; }
+    const due = custs.filter((c) => (c.balance || 0) > 0);
+    $("tot").textContent = rs(due.reduce((a, c) => a + c.balance, 0));
+    $("cN").textContent = custs.length + " grahak"; $("dN").textContent = due.length + " ke paas baki";
+    const t = days.find((d) => d.date === today()) || {};
+    $("tdG").textContent = "Aaj udhar " + rs(t.given || 0); $("tdR").textContent = "Aaj jama " + rs(t.received || 0);
+    const late = (c) => (c.balance || 0) > 0 && c.due && c.due < today();
+    const ch = $("chips"); ch.textContent = "";
+    [["all", "Sab"], ["baki", "Baki wale (" + due.length + ")"], ["late", "Wada nikla (" + custs.filter(late).length + ")"]].forEach(([k, n]) => { const b = el("button", k === flt ? "on" : "", n); b.onclick = () => { flt = k; renderHome(); }; ch.append(b); });
+    const q = $("q").value.trim().toLowerCase(), so = $("sort").value;
+    const rows = custs.filter((c) => (flt === "all" || (flt === "baki" ? (c.balance || 0) > 0 : late(c))) && (!q || (c.name || "").toLowerCase().includes(q) || (c.phone || "").includes(q)));
+    rows.sort((a, b) => so === "name" ? (a.name || "").localeCompare(b.name || "") : so === "recent" ? ms(b.updatedAt) - ms(a.updatedAt) : so === "wada" ? (a.due || "9999").localeCompare(b.due || "9999") : (b.balance || 0) - (a.balance || 0));
+    const box = $("cList"); box.textContent = "";
+    if (!rows.length) { box.append(el("div", "card empty", custs.length ? "Koi grahak nahi mila." : "Abhi koi grahak nahi. Neeche se pehla grahak jodo.")); return; }
+    rows.forEach((c) => {
+      const b = el("button", "row"), g = el("div", "grow"), bal = c.balance || 0;
+      g.append(el("b", "", c.name));
+      const sb = []; if (c.phone) sb.push(c.phone); if (bal > 0 && c.due) sb.push("Wada " + dshort(c.due));
+      if (sb.length) g.append(el("span", late(c) ? "sub red" : "sub", sb.join(" · ")));
+      const a = el("div", "amt " + (bal > 0 ? "red" : bal < 0 ? "green" : "zero"), bal ? rs(bal) : "₹0");
+      a.append(el("small", "", bal > 0 ? "baki" : bal < 0 ? "advance" : "barabar"));
+      b.append(el("span", "av", (c.name || "?")[0].toUpperCase()), g, a); b.onclick = () => openCust(c.id); box.append(b);
+    });
+  }
+  $("addC").onclick = () => sheet("Naya grahak", [{ k: "n", label: "Naam", req: 1, max: 60 }, { k: "p", label: "Mobile (zaruri nahi)", type: "tel", mode: "numeric", max: 14 }, { k: "d", label: "Wada tareekh (zaruri nahi)", type: "date" }], (v) => {
+    addDoc(collection(db, ...path("customers")), { name: v.n, phone: v.p.replace(/\D/g, "").slice(-10), due: v.d || "", balance: 0, createdAt: serverTimestamp(), updatedAt: serverTimestamp() }).catch(showError);
+  });
+
+  // ---------- Grahak ka page ----------
+  function openCust(id) {
+    cur = id; entries = []; eLoaded = false;
+    if (unsubE) unsubE();
+    unsubE = onSnapshot(query(collection(db, ...path("customers", id, "entries"))), (s) => { entries = s.docs.map((d) => ({ id: d.id, ...d.data() })); eLoaded = true; renderCust(); }, showError);
+    view("cust"); renderCust();
+  }
+  $("back").onclick = () => { cur = null; if (unsubE) { unsubE(); unsubE = null; } view("home"); };
+  const C = () => custs.find((c) => c.id === cur);
+  function renderCust() {
+    const c = C(); if (!c) return;
+    $("cAv").textContent = (c.name || "?")[0].toUpperCase(); $("cName").textContent = c.name; $("cPhone").textContent = c.phone || "Mobile number nahi";
+    $("cDue").textContent = (c.balance || 0) > 0 && c.due ? "Wada tareekh: " + dshort(c.due) + (c.due < today() ? " (nikal gayi)" : "") : ""; $("cDue").className = "sub" + ((c.balance || 0) > 0 && c.due && c.due < today() ? " red" : "");
+    const bal = c.balance || 0;
+    $("bL").textContent = bal > 0 ? "Aapko lena hai" : bal < 0 ? "Aapko dena hai (advance)" : "Hisaab barabar";
+    $("bal").textContent = rs(bal); $("bal").className = bal > 0 ? "red" : bal < 0 ? "green" : "zero";
+    if (c.phone) $("callA").href = "tel:+91" + c.phone; else $("callA").removeAttribute("href");
+    const msg = "Namaste " + c.name + " ji, " + shop + " mein aapka " + rs(bal) + " baki hai. Kripya jaldi jama kar dein. Dhanyavaad.";
+    if (c.phone && bal > 0) $("smsA").href = "sms:+91" + c.phone + "?body=" + encodeURIComponent(msg); else $("smsA").removeAttribute("href");
+    // Running balance: purane se naye ki taraf jod kar, phir ulta dikhate hain
+    const asc = [...entries].sort((a, b) => (a.date + ms(a.createdAt)).toString().localeCompare((b.date + ms(b.createdAt)).toString()));
+    let run = 0; asc.forEach((e) => { run += e.type === "given" ? e.amount : -e.amount; e.run = run; });
+    const box = $("eList"); box.textContent = "";
+    if (!eLoaded) { box.append(spin()); return; }
+    if (!asc.length) { box.append(el("div", "card empty", "Abhi koi len-den nahi.")); return; }
+    asc.reverse().forEach((e) => {
+      const b = el("button", "ent"), g = el("div", "grow");
+      g.append(el("b", "", e.type === "given" ? "Udhar diya" : "Jama mila"), el("small", "", dshort(e.date) + (e.note ? " · " + e.note : "")));
+      const a = el("div", "amt " + (e.type === "given" ? "red" : "green"), rs(e.amount)); a.append(el("small", "", "baki " + (e.run < 0 ? "-" : "") + rs(e.run)));
+      b.append(g, a); b.onclick = () => editEntry(e); box.append(b);
+    });
+  }
+  const delta = (type, amt) => (type === "given" ? amt : -amt);
+  // Roz ka total (days) bhi usi batch mein badalta hai, taaki hisaab-kitab hamesha sahi rahe
+  const dayAdj = (b, date, type, amt) => { if (amt) b.set(doc(db, ...path("days", date)), { date, month: date.slice(0, 7), [type === "given" ? "given" : "received"]: increment(amt) }, { merge: true }); };
+  function entryFields(e) { return [{ k: "a", label: "Rakam (₹)", type: "number", mode: "numeric", min: 1, req: 1, value: e ? e.amount : "" }, { k: "n", label: "Note (zaruri nahi)", value: e ? e.note : "", max: 200 }, { k: "d", label: "Tareekh", type: "date", value: e ? e.date : today(), req: 1 }]; }
+  function addEntry(type) {
+    sheet(type === "given" ? "Udhar diya" : "Jama mila", entryFields(), (v) => {
+      const amt = Math.round(Number(v.a)); if (!(amt > 0)) { toast("Sahi rakam daalo."); return false; }
+      const b = writeBatch(db); // entry aur balance ek saath badlenge, ya dono, ya koi nahi
+      b.set(doc(collection(db, ...path("customers", cur, "entries"))), { type, amount: amt, note: v.n, date: v.d || today(), createdAt: serverTimestamp() });
+      b.update(custRef(cur), { balance: increment(delta(type, amt)), updatedAt: serverTimestamp() });
+      dayAdj(b, v.d || today(), type, amt);
+      b.commit().catch(showError);
+    });
+  }
+  $("gB").onclick = () => addEntry("given"); $("rB").onclick = () => addEntry("received");
+  function editEntry(e) {
+    const eref = doc(db, ...path("customers", cur, "entries", e.id));
+    sheet("Entry badlo", entryFields(e), (v) => {
+      const amt = Math.round(Number(v.a)); if (!(amt > 0)) { toast("Sahi rakam daalo."); return false; }
+      const b = writeBatch(db);
+      b.update(eref, { amount: amt, note: v.n, date: v.d || e.date });
+      b.update(custRef(cur), { balance: increment(delta(e.type, amt) - delta(e.type, e.amount)), updatedAt: serverTimestamp() });
+      const nd = v.d || e.date;
+      if (nd === e.date) dayAdj(b, nd, e.type, amt - e.amount); else { dayAdj(b, e.date, e.type, -e.amount); dayAdj(b, nd, e.type, amt); }
+      b.commit().catch(showError);
+    }, () => {
+      const b = writeBatch(db); b.delete(eref);
+      b.update(custRef(cur), { balance: increment(-delta(e.type, e.amount)), updatedAt: serverTimestamp() });
+      dayAdj(b, e.date, e.type, -e.amount);
+      b.commit().catch(showError);
+    });
+  }
+  $("cEdit").onclick = () => { const c = C(); sheet("Grahak badlo", [{ k: "n", label: "Naam", value: c.name, req: 1, max: 60 }, { k: "p", label: "Mobile", type: "tel", mode: "numeric", value: c.phone, max: 14 }, { k: "d", label: "Wada tareekh (kab dega)", type: "date", value: c.due || "" }],
+    (v) => { writeBatch(db).update(custRef(cur), { name: v.n, phone: v.p.replace(/\D/g, "").slice(-10), due: v.d || "", updatedAt: serverTimestamp() }).commit().catch(showError); },
+    async () => { // grahak ke saath uski saari entries bhi hatao
+      const id = cur; try { const s = await getDocs(collection(db, ...path("customers", id, "entries"))); const b = writeBatch(db); s.forEach((d) => b.delete(d.ref)); b.delete(custRef(id)); await b.commit(); } catch (err) { showError(err); return; }
+      $("back").onclick();
+    }); };
+  const wa = (text) => { const c = C(); if (!c.phone) return toast("Pehle mobile number jodo (Badlo)."); window.open("https://wa.me/91" + c.phone + "?text=" + encodeURIComponent(text), "_blank"); };
+  $("remB").onclick = () => { const c = C(), b = c.balance || 0; if (b <= 0) return toast("Is grahak ka koi baki nahi."); wa("Namaste " + c.name + " ji, " + shop + " mein aapka " + rs(b) + " baki hai. Kripya jaldi jama kar dein. Dhanyavaad."); };
+  $("stB").onclick = () => {
+    const c = C(), last = [...entries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
+    wa(shop + " - " + c.name + " ji ka hisaab\n" + last.map((e) => dshort(e.date) + "  " + (e.type === "given" ? "Udhar" : "Jama") + "  " + rs(e.amount) + (e.note ? " (" + e.note + ")" : "")).join("\n") + "\nKul baki: " + rs(c.balance || 0));
+  };
 </script>
 </body>
 </html>
